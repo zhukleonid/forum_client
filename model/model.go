@@ -11,8 +11,13 @@ type AllPosts []struct {
 	CreateAt     time.Time `json:"create_at"`
 }
 
+type Register struct {
+	Name     string
+	Email    string
+	Password string
+}
+
 type Error struct {
 	Status      int
 	Discription string
 }
-

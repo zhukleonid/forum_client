@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bytes"
 	"html/template"
 	"lzhuk/clients/internal/convertor"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 
 const (
 	allPost = "http://localhost:8083/userd3"
+	registry = "http://localhost:8083/register"
 )
 
 func startPage(w http.ResponseWriter, r *http.Request) {
@@ -63,8 +65,35 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 func registerPage(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-
+		t, err := template.ParseFiles("./ui/html/register.html")
+		if err != nil {
+			http.Error(w, "Error parsing template", http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "register.html", nil)
+		if err != nil {
+			http.Error(w, "Error executing template", http.StatusInternalServerError)
+			return
+		}
 	case http.MethodPost:
+		jsonData, err := convertor.NewConvertRegister(r)
+		if err != nil {
+			http.Error(w, "Marshal registry error", http.StatusInternalServerError)
+			return
+		}
+		req, err := http.NewRequest("POST", registry, bytes.NewBuffer(jsonData))
+		if err != nil {
+			http.Error(w, "Request registry error", http.StatusInternalServerError)
+			return
+		}
+		req.Header.Set("Content-Type", "application/json")
+		client := http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			http.Error(w, "Request client registry error", http.StatusInternalServerError)
+			return
+		}
+		defer resp.Body.Close()
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
