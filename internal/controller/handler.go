@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	allPost = "http://localhost:8081/userd3"
+	allPost = "http://localhost:8083/userd3"
 )
 
 func startPage(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +47,6 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error request all posts", http.StatusInternalServerError)
 		return
 	}
-
 	t, err := template.ParseFiles("./ui/html/home.html")
 	if err != nil {
 		http.Error(w, "Error parsing template", http.StatusInternalServerError)
@@ -64,7 +63,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 func registerPage(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		
+
 	case http.MethodPost:
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
