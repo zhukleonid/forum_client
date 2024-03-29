@@ -1,0 +1,6 @@
+{
+    "port":":8081",
+    "readtimeout":30,
+    "writetimeout":90,
+    "idletimeout":120
+}
