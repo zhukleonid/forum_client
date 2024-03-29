@@ -21,3 +21,15 @@ type Error struct {
 	Status      int
 	Discription string
 }
+
+type Login struct {
+	Email    string
+	Password string
+}
+
+type Cookie struct {
+	Name   string
+	Value  string
+	Path   string
+	MaxAge int
+}

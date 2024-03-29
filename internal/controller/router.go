@@ -12,6 +12,7 @@ func Router(cfg config.Config) *http.Server {
 	mux.HandleFunc("/", startPage)
 	mux.HandleFunc("/userd3", homePage)
 	mux.HandleFunc("/register", registerPage)
+	mux.HandleFunc("/login", loginPage)
 	
 	
 	fileServer := http.FileServer(http.Dir("ui/css"))

@@ -15,11 +15,10 @@ func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
 	return posts, nil
 }
 
-func NewConvertRegister(r *http.Request)([]byte, error) {
-
+func NewConvertRegister(r *http.Request) ([]byte, error) {
 	register := model.Register{
-		Name: r.FormValue("name"),
-		Email:r.FormValue("email"),
+		Name:     r.FormValue("name"),
+		Email:    r.FormValue("email"),
 		Password: r.FormValue("password"),
 	}
 
@@ -27,6 +26,29 @@ func NewConvertRegister(r *http.Request)([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return jsonData, nil
+}
+
+func NewConvertLogin(r *http.Request) ([]byte, error) {
+	login := model.Login{
+		Email:    r.FormValue("email"),
+		Password: r.FormValue("password"),
+	}
+
+	jsonData, err := json.Marshal(login)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
+}
+
+func NewConvertCookie(resp *http.Response) (*http.Cookie, error) {
+	cookie := &http.Cookie{}
+	err := json.NewDecoder(resp.Body).Decode(cookie)
+	if err != nil {
+		return nil, err
+	}
+	return cookie, nil
 }
