@@ -2,6 +2,7 @@ package convertor
 
 import (
 	"encoding/json"
+	"fmt"
 	"lzhuk/clients/model"
 	"net/http"
 )
@@ -46,9 +47,10 @@ func NewConvertLogin(r *http.Request) ([]byte, error) {
 
 func NewConvertCookie(resp *http.Response) (*http.Cookie, error) {
 	cookie := &http.Cookie{}
-	err := json.NewDecoder(resp.Body).Decode(cookie)
+	err := json.NewDecoder(resp.Body).Decode(&cookie)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(cookie)
 	return cookie, nil
 }
