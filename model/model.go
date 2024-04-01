@@ -33,3 +33,9 @@ type Cookie struct {
 	Path   string
 	MaxAge int
 }
+
+type CreatePost struct {
+	CategoryName string
+	Title        string
+	Discription  string
+}

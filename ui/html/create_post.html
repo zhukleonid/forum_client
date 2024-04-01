@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать пост</title>
+</head>
+<body>
+    <h1>Создать новый пост</h1>
+    <form action="/userd3/posts" method="POST">
+        <div>
+            <label for="category">Выберите категорию:</label>
+            <select id="category" name="category">
+                <option value="Станции">Станции</option>
+                <option value="Подвижной состав">Подвижной состав</option>
+                <option value="Расписание">Расписание</option>
+                <option value="Тарифы">Тарифы</option>
+                <option value="Строительство">Строительство</option>
+                <option value="Другое">Другое</option>
+            </select>
+        </div>
+        <div>
+            <label for="title">Тема:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        <div>
+            <button type="submit">Отправить</button>
+        </div>
+    </form>
+</body>
+</html>

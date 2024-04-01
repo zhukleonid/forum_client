@@ -3,6 +3,7 @@ package convertor
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"lzhuk/clients/model"
 	"net/http"
 )
@@ -51,4 +52,19 @@ func NewConvertCookie(resp *http.Response) ([]*http.Cookie, error) {
 		return nil, errors.New("no cookies found in the response")
 	}
 	return cookies, nil
+}
+
+func NewConvertCreatePost(r *http.Request) ([]byte, error) {
+	createPost := model.CreatePost{
+		CategoryName: r.FormValue("category"),
+		Title:        r.FormValue("title"),
+		Discription:  r.FormValue("description"),
+	}
+
+	jsonData, err := json.Marshal(createPost)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(string(jsonData))
+	return jsonData, nil
 }
