@@ -45,6 +45,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer response.Body.Close()
 
+	cookies := response.Cookies()
+
 	result, err := convertor.NewConvertAllPosts(response)
 	if err != nil {
 		http.Error(w, "Error request all posts", http.StatusInternalServerError)
@@ -56,7 +58,12 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = t.ExecuteTemplate(w, "home.html", result)
+	data := map[string]interface{}{
+		"Posts":  result,
+		"Cookie": len(cookies) > 0, // Передаем true, если есть куки, иначе false
+	}
+
+	err = t.ExecuteTemplate(w, "home.html", data)
 	if err != nil {
 		http.Error(w, "Error executing template", http.StatusInternalServerError)
 		return
@@ -146,14 +153,43 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer resp.Body.Close()
-		
+
 		if resp.StatusCode == http.StatusOK {
-			cookie, err := convertor.NewConvertCookie(resp)
+			cookies, err := convertor.NewConvertCookie(resp)
 			if err != nil {
 				http.Error(w, "Error decode cookie", http.StatusInternalServerError)
 				return
 			}
-			http.SetCookie(w, cookie)
+			http.SetCookie(w, cookies[0])
+
+			response, err := http.Get(allPost)
+			if err != nil {
+				http.Error(w, "Error request all posts", http.StatusInternalServerError)
+				return
+			}
+			defer response.Body.Close()
+
+			result, err := convertor.NewConvertAllPosts(response)
+			if err != nil {
+				http.Error(w, "Error request all posts", http.StatusInternalServerError)
+				return
+			}
+			t, err := template.ParseFiles("./ui/html/home.html")
+			if err != nil {
+				http.Error(w, "Error parsing template", http.StatusInternalServerError)
+				return
+			}
+
+			data := map[string]interface{}{
+				"Posts":  result,
+				"Cookie": len(cookies) > 0, // Передаем true, если есть куки, иначе false
+			}
+
+			err = t.ExecuteTemplate(w, "home.html", data)
+			if err != nil {
+				http.Error(w, "Error executing template", http.StatusInternalServerError)
+				return
+			}
 		}
 
 	default:

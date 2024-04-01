@@ -8,17 +8,24 @@
 <body>
     <header>
         <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
+        {{if .Cookie}}
+        <li><a href="/create-post">Создать пост</a></li>
+        <li><a href="/my-posts">Мои посты</a></li>
+        <li><a href="/liked-posts">Понравившиеся посты</a></li>
+        <li><a href="/liked-posts">Выйти</a></li>
+        {{else}}
         <li><a href="/register">Зарегистрироваться</a></li>
         <li><a href="/login">Войти</a></li>
+        {{end}}
     </header>
     <section>
-        {{range .}}
+        {{range .Posts}}
         <div class="post">
             <h3>{{.Title}}</h3>
-            <p>{{.Discription}}</p>
+            <p>{{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
             <p>Автор: {{.UserID}}</p>
-            <p>Дата создания: {{.CreateAt}}</p>
+            <p>Дата создания: {{.CreatedAt}}</p>
         </div>
         {{end}}
     </section>

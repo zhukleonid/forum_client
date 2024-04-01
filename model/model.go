@@ -7,8 +7,8 @@ type AllPosts []struct {
 	UserID       int       `json:"user_id"`
 	CategoryName string    `json:"category_name"`
 	Title        string    `json:"title"`
-	Discription  string    `json:"discription"`
-	CreateAt     time.Time `json:"create_at"`
+	Description  string    `json:"discription"`
+	CreatedAt    time.Time `json:"create_at"`
 }
 
 type Register struct {
