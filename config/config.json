@@ -1,5 +1,6 @@
 {
     "port":":8082",
+    "portServer":8083,
     "readtimeout":30,
     "writetimeout":90,
     "idletimeout":120

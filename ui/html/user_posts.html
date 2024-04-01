@@ -3,25 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моя страница</title>
+    <title>Мои посты</title>
 </head>
 <body>
     <header>
         <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
-        {{if .Cookie}}
         <li><a href="/userd3/posts">Создать пост</a></li>
         <li><a href="/userd3/myposts">Мои посты</a></li>
         <li><a href="/liked-posts">Понравившиеся посты</a></li>
         <li><a href="/liked-posts">Выйти</a></li>
-        {{else}}
-        <li><a href="/register">Зарегистрироваться</a></li>
-        <li><a href="/login">Войти</a></li>
-        {{end}}
     </header>
     <section>
-        {{range .Posts}}
+        {{range .}}
         <div class="post">
-            <h3><a href="/userd3/post/{{.PostID}}">{{.Title}}</a></h3>
+            <h3>{{.Title}}</h3>
             <p>{{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
             <p>Автор: {{.UserID}}</p>

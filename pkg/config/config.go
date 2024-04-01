@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Port         string `json:"port"`
+	PortServer   int    `json:"portServer"`
 	ReadTimeout  int
 	WriteTimeout int
 	IdleTimeout  int
@@ -25,3 +26,4 @@ func Load() (Config, error) {
 	}
 	return cfg, nil
 }
+

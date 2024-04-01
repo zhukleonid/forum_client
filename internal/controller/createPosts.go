@@ -61,7 +61,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			}
 			defer response.Body.Close()
 
-			cookies := response.Cookies()
+			cookies := r.Cookies()
 
 			result, err := convertor.NewConvertAllPosts(response)
 			if err != nil {

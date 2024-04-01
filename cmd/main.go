@@ -11,5 +11,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	server.StartServer(cfg)
 }

@@ -14,6 +14,8 @@ func Router(cfg config.Config) *http.Server {
 	mux.HandleFunc("/register", registerPage)
 	mux.HandleFunc("/login", loginPage)
 	mux.HandleFunc("/userd3/posts", createPost)
+	mux.HandleFunc("/userd3/myposts", myPosts)
+	mux.HandleFunc("/userd3/post/", getPost)
 	
 	
 	fileServer := http.FileServer(http.Dir("ui/css"))
