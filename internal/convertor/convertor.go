@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"lzhuk/clients/model"
 	"net/http"
+	"strconv"
 )
 
 func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
@@ -66,7 +67,6 @@ func NewConvertCreatePost(r *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(jsonData))
 	return jsonData, nil
 }
 
@@ -77,4 +77,20 @@ func NewConvertGetPosts(resp *http.Response) (*model.GetPost, error) {
 		return nil, err
 	}
 	return getPosts, nil
+}
+
+func NewConvertCreateComment(r *http.Request) ([]byte, error) {
+	postId, err := strconv.Atoi(r.FormValue("postId"))
+	if err != nil {
+		return nil, err
+	}
+	createComment := model.CreateComment{
+		Post:        postId,
+		Description: r.FormValue("comment"),
+	}
+	jsonData, err := json.Marshal(createComment)
+	if err != nil {
+		return nil, err
+	}
+	return jsonData, nil
 }

@@ -62,3 +62,8 @@ type GetPost struct {
 	Post     *Post
 	Comments []*Comment
 }
+
+type CreateComment struct {
+	Post        int    `json:"post_id"`
+	Description string `json:"description"`
+}

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"lzhuk/clients/internal/convertor"
 	"net/http"
@@ -35,7 +34,6 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		}
 	case http.MethodPost:
 		jsonData, err := convertor.NewConvertCreatePost(r)
-		fmt.Println(string(jsonData))
 		if err != nil {
 			http.Error(w, "Marshal CreatePost error", http.StatusInternalServerError)
 			return

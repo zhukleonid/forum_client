@@ -36,7 +36,8 @@
         {{end}}
     </section>
 
-    <form action="/userd3/comment-create" method="POST">
+    <form action="/userd3/createcomment" method="POST">
+        <input type="hidden" name="postId" value="{{.Post.PostId}}">
         <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50"></textarea><br>
         <input type="submit" value="Отправить">
     </form>
