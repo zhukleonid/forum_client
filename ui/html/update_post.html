@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменение поста</title>
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
+        <ul>
+            <li><a href="/userd3/posts">Создать пост</a></li>
+            <li><a href="/userd3/myposts">Мои посты</a></li>
+            <li><a href="/liked-posts">Понравившиеся посты</a></li>
+            <li><a href="/liked-posts">Выйти</a></li>
+        </ul>
+    </header>
+    <section>
+        <div class="post">
+            <form action="/userd3/updatepost/" method="POST">
+                <input type="hidden" name="postId" value="{{.Post.PostId}}">
+                <label for="title">Заголовок:</label><br>
+                <input type="text" id="title" name="title" value="{{.Post.Title}}"><br>
+                <label for="description">Описание:</label><br>
+                <textarea id="description" name="description" rows="4" cols="50">{{.Post.Description}}</textarea><br>
+                <input type="submit" value="Изменить">
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 | Твой диаметр</p>
+    </footer>
+</body>
+</html>

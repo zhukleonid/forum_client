@@ -31,7 +31,6 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request client registry error", http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(resp.Body)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
 
