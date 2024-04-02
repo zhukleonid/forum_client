@@ -16,9 +16,10 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 	parts := strings.Split(path, "/")
 	id := parts[len(parts)-1]
-	getUserPost = fmt.Sprintf(getUserPost, id)
+	getUserPostId := fmt.Sprintf(getUserPost + "%s", id)
+	fmt.Println(getUserPostId)
 
-	req, err := http.NewRequest("POST", getUserPost, nil)
+	req, err := http.NewRequest("GET", getUserPostId, nil)
 	if err != nil {
 		http.Error(w, "Request getUserPost error", http.StatusInternalServerError)
 		return
@@ -30,14 +31,14 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request client registry error", http.StatusInternalServerError)
 		return
 	}
+	fmt.Println(resp.Body)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
 
-		cookies := r.Cookies()
 
-		result, err := convertor.NewConvertAllPosts(resp)
+		result, err := convertor.NewConvertGetPosts(resp)
 		if err != nil {
-			http.Error(w, "Error request all posts", http.StatusInternalServerError)
+			http.Error(w, "Error request get posts", http.StatusInternalServerError)
 			return
 		}
 		t, err := template.ParseFiles("./ui/html/post.html")
@@ -45,13 +46,8 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error parsing template", http.StatusInternalServerError)
 			return
 		}
-
-		data := map[string]interface{}{
-			"Posts":  result,
-			"Cookie": len(cookies) > 0, // Передаем true, если есть куки, иначе false
-		}
-
-		err = t.ExecuteTemplate(w, "post.html", data)
+		fmt.Println(result)
+		err = t.ExecuteTemplate(w, "post.html", result)
 		if err != nil {
 			http.Error(w, "Error executing template", http.StatusInternalServerError)
 			return

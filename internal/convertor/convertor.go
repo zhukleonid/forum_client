@@ -10,6 +10,7 @@ import (
 
 func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
 	posts := model.AllPosts{}
+	fmt.Println(resp.Body)
 	err := json.NewDecoder(resp.Body).Decode(&posts)
 	if err != nil {
 		return nil, err
@@ -58,7 +59,7 @@ func NewConvertCreatePost(r *http.Request) ([]byte, error) {
 	createPost := model.CreatePost{
 		CategoryName: r.FormValue("category"),
 		Title:        r.FormValue("title"),
-		Discription:  r.FormValue("description"),
+		Description:  r.FormValue("description"),
 	}
 
 	jsonData, err := json.Marshal(createPost)
@@ -69,3 +70,11 @@ func NewConvertCreatePost(r *http.Request) ([]byte, error) {
 	return jsonData, nil
 }
 
+func NewConvertGetPosts(resp *http.Response) (*model.GetPost, error) {
+	getPosts := &model.GetPost{}
+	err := json.NewDecoder(resp.Body).Decode(getPosts)
+	if err != nil {
+		return nil, err
+	}
+	return getPosts, nil
+}

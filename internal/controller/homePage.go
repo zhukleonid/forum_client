@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"html/template"
 	"lzhuk/clients/internal/convertor"
 	"net/http"
@@ -31,7 +32,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error parsing template", http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println(result)
 	data := map[string]interface{}{
 		"Posts":  result,
 		"Cookie": len(cookies) > 0, // Передаем true, если есть куки, иначе false

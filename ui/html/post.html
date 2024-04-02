@@ -8,27 +8,38 @@
 <body>
     <header>
         <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
-        {{if .Cookie}}
-        <li><a href="/userd3/posts">Создать пост</a></li>
-        <li><a href="/userd3/myposts">Мои посты</a></li>
-        <li><a href="/liked-posts">Понравившиеся посты</a></li>
-        <li><a href="/liked-posts">Выйти</a></li>
-        {{else}}
-        <li><a href="/register">Зарегистрироваться</a></li>
-        <li><a href="/login">Войти</a></li>
-        {{end}}
+        <ul>
+            <li><a href="/userd3/posts">Создать пост</a></li>
+            <li><a href="/userd3/myposts">Мои посты</a></li>
+            <li><a href="/liked-posts">Понравившиеся посты</a></li>
+            <li><a href="/liked-posts">Выйти</a></li>
+        </ul>
     </header>
     <section>
-        {{range .Posts}}
+        {{with .Post}}
         <div class="post">
-            <h3><a href="/userd3/post/{{.PostID}}">{{.Title}}</a></h3>
+            <h3>{{.Title}}</h3>
             <p>{{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
-            <p>Автор: {{.UserID}}</p>
-            <p>Дата создания: {{.CreatedAt}}</p>
+            <p>Автор: {{.UserId}}</p>
+            <p>Дата создания: {{.CreateDate}}</p>
+        </div>
+        {{end}}
+
+        <h4>Комментарии:</h4>
+        {{range .Comments}}
+        <div class="comment">
+            <p>{{.Description}}</p>
+            <p>Автор: {{.User}}</p>
+            <p>Дата создания: {{.CreatedDate}}</p>
         </div>
         {{end}}
     </section>
+
+    <form action="/userd3/comment-create" method="POST">
+        <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Отправить">
+    </form>
     <footer>
         <p>© 2024 | Твой диаметр</p>
     </footer>
