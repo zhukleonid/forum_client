@@ -20,12 +20,24 @@
             <h3>{{.Title}}</h3>
             <p>{{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
-            <p>Автор: {{.UserId}}</p>
+            <p>Автор: {{.Author}}</p>
             <p>Дата создания: {{.CreateDate}}</p>
             <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
+            <form action="/userd3/votepost" method="POST">
+                <input type="hidden" name="postId" value="{{.PostId}}">
+                <input type="hidden" name="vote" value="true">
+                <input type="submit" value="Нравится">
+                <label for="like"></label>
+            </form>
+            <form action="/userd3/votepost" method="POST">
+                <input type="hidden" name="postId" value="{{.PostId}}">
+                <input type="hidden" name="vote" value="false">
+                <input type="submit" value="Не нравится">
+                <label for="dislike"></label>
+            </form>
         </div>
         {{end}}
-
+    
         <h4>Комментарии:</h4>
         {{range .Comments}}
         <div class="comment">
@@ -35,7 +47,8 @@
         </div>
         {{end}}
     </section>
-
+    
+    
     <form action="/userd3/createcomment" method="POST">
         <input type="hidden" name="postId" value="{{.Post.PostId}}">
         <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50"></textarea><br>

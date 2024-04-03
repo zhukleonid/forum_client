@@ -9,6 +9,9 @@ type AllPosts []struct {
 	Title        string    `json:"title"`
 	Description  string    `json:"description"`
 	CreatedAt    time.Time `json:"create_at"`
+	Author  string `json:"name"`
+	Like    int    `json:"likes"`
+	Dislike int    `json:"dislikes"`
 }
 
 type Post struct {
@@ -19,8 +22,9 @@ type Post struct {
 	Description  string
 	CreateDate   time.Time
 
-	Like    int `json:"likes"`
-	Dislike int `json:"dislikes"`
+	Author  string `json:"name"`
+	Like    int    `json:"likes"`
+	Dislike int    `json:"dislikes"`
 }
 
 type Register struct {

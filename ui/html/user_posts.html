@@ -17,10 +17,9 @@
     <section>
         {{range .}}
         <div class="post">
-            <h3><a href="/userd3/updatepost/{{.PostID}}">{{.Title}}</a></h3>
-            <p>{{.Description}}</p>
+            <h3>Тема: <a href="/userd3/updatepost/{{.PostID}}">{{.Title}}</a></h3>
+            <p>Описание темы: {{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
-            <p>Автор: {{.UserID}}</p>
             <p>Дата создания: {{.CreatedAt}}</p>
         </div>
         {{end}}

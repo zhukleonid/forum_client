@@ -113,7 +113,7 @@ func NewConvertVotePost(r *http.Request) ([]byte, error) {
 		return nil, err
 	}
 	var status bool
-	switch r.FormValue("status") {
+	switch r.FormValue("vote") {
 	case "true":
 		status = true
 	case "false":

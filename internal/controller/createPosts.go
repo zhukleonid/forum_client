@@ -2,6 +2,7 @@ package controller
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"lzhuk/clients/internal/convertor"
 	"net/http"
@@ -38,6 +39,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Marshal CreatePost error", http.StatusInternalServerError)
 			return
 		}
+		fmt.Println(string(jsonData))
 		req, err := http.NewRequest("POST", createPosts, bytes.NewBuffer(jsonData))
 		if err != nil {
 			http.Error(w, "Request registry error", http.StatusInternalServerError)
