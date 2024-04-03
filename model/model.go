@@ -18,6 +18,9 @@ type Post struct {
 	Title        string
 	Description  string
 	CreateDate   time.Time
+
+	Like    int `json:"likes"`
+	Dislike int `json:"dislikes"`
 }
 
 type Register struct {
@@ -51,11 +54,11 @@ type CreatePost struct {
 
 type Comment struct {
 	ID          int
-	User        int
-	Post        int
+	User        int `json:"user_id"`
+	Post        int `json:"post_id"`
 	Description string
-	CreatedDate time.Time
-	UpdatedDate time.Time
+	CreatedDate time.Time `json:"created_at"`
+	UpdatedDate time.Time `json:"updated_at"`
 }
 
 type GetPost struct {

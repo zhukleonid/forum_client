@@ -41,16 +41,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 		defer resp.Body.Close()
 
 		if resp.StatusCode == http.StatusOK {
-			t, err := template.ParseFiles("./ui/html/login.html")
-			if err != nil {
-				http.Error(w, "Error parsing template", http.StatusInternalServerError)
-				return
-			}
-			err = t.ExecuteTemplate(w, "login.html", nil)
-			if err != nil {
-				http.Error(w, "Error executing template", http.StatusInternalServerError)
-				return
-			}
+			http.Redirect(w, r, "http://localhost:8082/login", 300)
 		}
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

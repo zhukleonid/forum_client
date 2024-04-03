@@ -9,4 +9,5 @@ const (
 	getUserPost     = "http://localhost:8083/userd3/post?id="
 	createComments = "http://localhost:8083/userd3/comment-create"
 	updatePosts = "http://localhost:8083/userd3/post-update?id="
+	deletePosts = "http://localhost:8083/userd3/post-delete?id="
 )

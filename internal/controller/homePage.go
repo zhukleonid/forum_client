@@ -1,17 +1,16 @@
 package controller
 
 import (
-	"fmt"
 	"html/template"
 	"lzhuk/clients/internal/convertor"
 	"net/http"
 )
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+	// if r.Method != http.MethodGet {
+	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	// 	return
+	// }
 
 	response, err := http.Get(allPost)
 	if err != nil {
@@ -20,7 +19,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer response.Body.Close()
 
-	cookies := response.Cookies()
+	cookies := r.Cookies()
 
 	result, err := convertor.NewConvertAllPosts(response)
 	if err != nil {
@@ -32,7 +31,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error parsing template", http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(result)
+
 	data := map[string]interface{}{
 		"Posts":  result,
 		"Cookie": len(cookies) > 0, // Передаем true, если есть куки, иначе false

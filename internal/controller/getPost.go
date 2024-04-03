@@ -9,10 +9,10 @@ import (
 )
 
 func getPost(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+	// if r.Method != http.MethodGet {
+	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	// 	return
+	// }
 	path := r.URL.Path
 	parts := strings.Split(path, "/")
 	id := parts[len(parts)-1]
@@ -33,8 +33,6 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
-
-
 		result, err := convertor.NewConvertGetPosts(resp)
 		if err != nil {
 			http.Error(w, "Error request get posts", http.StatusInternalServerError)

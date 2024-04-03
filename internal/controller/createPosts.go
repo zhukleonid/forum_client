@@ -54,37 +54,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		defer resp.Body.Close()
 
 		if resp.StatusCode == http.StatusOK {
-			response, err := http.Get(allPost)
-			if err != nil {
-				http.Error(w, "Error request all posts", http.StatusInternalServerError)
-				return
-			}
-			defer response.Body.Close()
-
-			cookies := r.Cookies()
-
-			result, err := convertor.NewConvertAllPosts(response)
-			if err != nil {
-				http.Error(w, "Error request all posts", http.StatusInternalServerError)
-				return
-			}
-			t, err := template.ParseFiles("./ui/html/home.html")
-			if err != nil {
-				http.Error(w, "Error parsing template", http.StatusInternalServerError)
-				return
-			}
-
-			data := map[string]interface{}{
-				"Posts":  result,
-				"Cookie": len(cookies) > 0, // Передаем true, если есть куки, иначе false
-			}
-
-			err = t.ExecuteTemplate(w, "home.html", data)
-			if err != nil {
-				http.Error(w, "Error executing template", http.StatusInternalServerError)
-				return
-			}
-
+			http.Redirect(w, r, "http://localhost:8082/userd3/myposts", 300)
 		}
 	}
 }

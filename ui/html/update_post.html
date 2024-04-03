@@ -16,7 +16,7 @@
         </ul>
     </header>
     <section>
-        <div class="post">
+        <div class="postupdate">
             <form action="/userd3/updatepost/" method="POST">
                 <input type="hidden" name="postId" value="{{.Post.PostId}}">
                 <label for="title">Заголовок:</label><br>
@@ -24,6 +24,12 @@
                 <label for="description">Описание:</label><br>
                 <textarea id="description" name="description" rows="4" cols="50">{{.Post.Description}}</textarea><br>
                 <input type="submit" value="Изменить">
+            </form>
+        </div>
+        <div class="postdelete">
+            <form action="/userd3/deletepost/" method="POST">
+                <input type="hidden" name="postId" value="{{.Post.PostId}}">
+                <input type="submit" value="Удалить">
             </form>
         </div>
     </section>
