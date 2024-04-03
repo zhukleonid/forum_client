@@ -10,4 +10,5 @@ const (
 	createComments = "http://localhost:8083/userd3/comment-create"
 	updatePosts = "http://localhost:8083/userd3/post-update?id="
 	deletePosts = "http://localhost:8083/userd3/post-delete?id="
+	votePosts = "http://localhost:8083?userd3/post-like"
 )
