@@ -23,6 +23,7 @@ func Router(cfg config.Config) *http.Server {
 	mux.HandleFunc("/userd3/votecomment", voteComment)
 	mux.HandleFunc("/userd3/likeposts", likePost)
 	mux.HandleFunc("/userd3/updatecomment", updateComment)
+	mux.HandleFunc("/userd3/deletecomment", deleteComment)
 
 	fileServer := http.FileServer(http.Dir("ui/css"))
 	mux.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))

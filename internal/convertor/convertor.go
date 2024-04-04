@@ -203,3 +203,24 @@ func NewConvertUpdateCommentUser(r *http.Request) ([]byte, error) {
 	}
 	return jsonData, nil
 }
+
+func NewConvertDeleteComment(r *http.Request)([]byte, error) {
+	commentId, err := strconv.Atoi(r.FormValue("commentId"))
+	if err != nil {
+		return nil, err
+	}
+	posttId, err := strconv.Atoi(r.FormValue("postId"))
+	if err != nil {
+		return nil, err
+	}
+
+	deleteComment := model.Comment{
+		ID: commentId,
+		Post: posttId,
+	}
+	jsonData, err := json.Marshal(deleteComment)
+	if err != nil {
+		return nil, err
+	}
+	return jsonData, nil
+}
