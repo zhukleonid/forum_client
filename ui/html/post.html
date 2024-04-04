@@ -4,15 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моя страница</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section {
+            padding: 20px;
+            text-align: left;
+        }
+        .post {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .comment {
+            background-color: #f9f9f9;
+            border-left: 6px solid #ccc;
+            margin: 10px 0;
+            padding: 10px 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"],
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100px; /* Фиксированная ширина кнопок */
+        }
+        input[type="submit"]:hover,
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+        .vote-buttons {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+        .vote-buttons form {
+            margin-right: 20px; /* Отступ между кнопками */
+        }
+        .like-dislike-count {
+            margin-left: 5px; /* Отступ для значений */
+        }
+        .comment-form {
+            margin-left: 50px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
-            <li><a href="/userd3">Главная</a></li>
-            <li><a href="/userd3/posts">Создать пост</a></li>
-            <li><a href="/userd3/myposts">Мои посты</a></li>
-            <li><a href="/liked-posts">Понравившиеся посты</a></li>
-            <li><a href="/liked-posts">Выйти</a></li>
+        <nav>
+            <ul>
+                <li><a href="/userd3">Главная</a></li>
+                <li><a href="/userd3/posts">Создать пост</a></li>
+                <li><a href="/userd3/myposts">Мои посты</a></li>
+                <li><a href="/liked-posts">Понравившиеся посты</a></li>
+                <li><a href="/liked-posts">Выйти</a></li>
+            </ul>
+        </nav>
     </header>
     <section>
         {{with .Post}}
@@ -22,19 +119,20 @@
             <p>Категория: {{.CategoryName}}</p>
             <p>Автор: {{.Author}}</p>
             <p>Дата создания: {{.CreateDate}}</p>
-            <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
-            <form action="/userd3/votepost" method="POST">
-                <input type="hidden" name="postId" value="{{.PostId}}">
-                <input type="hidden" name="vote" value="true">
-                <input type="submit" value="Нравится">
-                <label for="like"></label>
-            </form>
-            <form action="/userd3/votepost" method="POST">
-                <input type="hidden" name="postId" value="{{.PostId}}">
-                <input type="hidden" name="vote" value="false">
-                <input type="submit" value="Не нравится">
-                <label for="dislike"></label>
-            </form>
+            <div class="vote-buttons">
+                <form action="/userd3/votepost" method="POST">
+                    <input type="hidden" name="postId" value="{{.PostId}}">
+                    <input type="hidden" name="vote" value="true">
+                    <input type="submit" value="Нравится">
+                    <span class="like-dislike-count">{{.Like}}</span>
+                </form>
+                <form action="/userd3/votepost" method="POST">
+                    <input type="hidden" name="postId" value="{{.PostId}}">
+                    <input type="hidden" name="vote" value="false">
+                    <input type="submit" value="Не нравится">
+                    <span class="like-dislike-count">{{.Dislike}}</span>
+                </form>
+            </div>
         </div>
         {{end}}
     
@@ -49,7 +147,7 @@
     </section>
     
     
-    <form action="/userd3/createcomment" method="POST">
+    <form class="comment-form" action="/userd3/createcomment" method="POST">
         <input type="hidden" name="postId" value="{{.Post.PostId}}">
         <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50"></textarea><br>
         <input type="submit" value="Отправить">
