@@ -20,7 +20,7 @@ type Post struct {
 	CategoryName string `json:"category_name"`
 	Title        string
 	Description  string
-	CreateDate   time.Time
+	CreateDate   time.Time `json:"create_at"`
 
 	Author  string `json:"name"`
 	Like    int    `json:"likes"`
@@ -73,6 +73,12 @@ type GetPost struct {
 }
 
 type CreateComment struct {
+	Post        int    `json:"post_id"`
+	Description string `json:"description"`
+}
+
+type UpdateComment struct {
+	ID          int    `json:"id"`
 	Post        int    `json:"post_id"`
 	Description string `json:"description"`
 }

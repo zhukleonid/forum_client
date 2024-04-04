@@ -8,7 +8,7 @@ import (
 
 func Router(cfg config.Config) *http.Server {
 	mux := http.NewServeMux()
-	
+
 	mux.HandleFunc("/", startPage)
 	mux.HandleFunc("/userd3", homePage)
 	mux.HandleFunc("/register", registerPage)
@@ -21,14 +21,16 @@ func Router(cfg config.Config) *http.Server {
 	mux.HandleFunc("/userd3/deletepost/", deletePost)
 	mux.HandleFunc("/userd3/votepost", votePost)
 	mux.HandleFunc("/userd3/votecomment", voteComment)
-	
+	mux.HandleFunc("/userd3/likeposts", likePost)
+	mux.HandleFunc("/userd3/updatecomment", updateComment)
+
 	fileServer := http.FileServer(http.Dir("ui/css"))
 	mux.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))
 	s := &http.Server{
 		Addr:         cfg.Port,
 		ReadTimeout:  time.Duration(cfg.ReadTimeout) * time.Second,  // время ожидания для чтения данных
-		WriteTimeout: time.Duration(cfg.WriteTimeout) * time.Second,  // время ожидания для записи данных
-		IdleTimeout:  time.Duration(cfg.IdleTimeout) * time.Second, // время простоя
+		WriteTimeout: time.Duration(cfg.WriteTimeout) * time.Second, // время ожидания для записи данных
+		IdleTimeout:  time.Duration(cfg.IdleTimeout) * time.Second,  // время простоя
 		Handler:      mux,
 	}
 	return s

@@ -105,9 +105,9 @@
         <nav>
             <ul>
                 <li><a href="/userd3">Главная</a></li>
-                <li><a href="/userd3/posts">Создать пост</a></li>
-                <li><a href="/userd3/myposts">Мои посты</a></li>
-                <li><a href="/liked-posts">Понравившиеся посты</a></li>
+                <li><a href="/userd3/posts">Создать тему</a></li>
+                <li><a href="/userd3/myposts">Мои темы</a></li>
+                <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
                 <li><a href="/liked-posts">Выйти</a></li>
             </ul>
         </nav>
@@ -157,6 +157,15 @@
                         <input type="hidden" name="vote" value="false">
                         <input type="submit" value="Не нравится">
                         <span class="like-dislike-count">{{.Dislike}}</span>
+                    </form>
+                    <form action="/userd3/updatecomment" method="GET">
+                        <input type="hidden" name="commentId" value="{{.ID}}">
+                        <input type="hidden" name="postId" value="{{.Post}}">
+                        <input type="hidden" name="description" value="{{.Description}}">
+                        <input type="submit" value="Изменить">
+                    </form>
+                    <form action="/userd3/deletecomment" method="GET">
+                        <input type="submit" value="Удалить">
                     </form>
                 </div>
             </div>

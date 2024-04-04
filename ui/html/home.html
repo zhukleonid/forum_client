@@ -55,20 +55,16 @@
         }
     </style>
 </head>
+{{if .Cookie}}
 <body>
     <header>
-        <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
+        <h1>МЦД-3 | Твой диаметр</h1>
         <nav>
             <ul>
-                {{if .Cookie}}
                 <li><a href="/userd3/posts">Создать тему</a></li>
                 <li><a href="/userd3/myposts">Мои темы</a></li>
-                <li><a href="/liked-posts">Понравившиеся темы</a></li>
+                <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
                 <li><a href="/liked-posts">Выйти</a></li>
-                {{else}}
-                <li><a href="/register">Зарегистрироваться</a></li>
-                <li><a href="/login">Войти</a></li>
-                {{end}}
             </ul>
         </nav>
     </header>
@@ -88,4 +84,32 @@
         <p>© 2024 | Твой диаметр</p>
     </footer>
 </body>
+{{else}}
+<body>
+    <header>
+        <h1>Добро пожаловать на форум "Твой диаметр"!</h1>
+        <nav>
+            <ul>
+                <li><a href="/register">Зарегистрироваться</a></li>
+                <li><a href="/login">Войти</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        {{range .Posts}}
+        <div class="post">
+            <h3>{{.Title}}</h3>
+            <p>{{.Description}}</p>
+            <p>Категория: {{.CategoryName}}</p>
+            <p>Автор: {{.Author}}</p>
+            <p>Дата создания: {{.CreatedAt}}</p>
+            <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
+        </div>
+        {{end}}
+    </section>
+    <footer>
+        <p>© 2024 | Твой диаметр</p>
+    </footer>
+</body>
+{{end}}
 </html>

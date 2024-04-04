@@ -48,7 +48,6 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	case http.MethodPost:
-		fmt.Println("check")
 		jsonData, err := convertor.NewConvertUpdatePost(r)
 		if err != nil {
 			http.Error(w, "Marshal CreateComment error", http.StatusInternalServerError)

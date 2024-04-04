@@ -17,25 +17,20 @@
             padding: 20px;
             text-align: center;
         }
-        header h1 a {
-            color: #fff;
-            text-decoration: none;
-        }
-        header ul {
+        
+        ul {
             list-style-type: none;
+            margin: 0;
             padding: 0;
             text-align: center;
         }
-        header ul li {
+        li {
             display: inline;
             margin-right: 20px;
         }
-        header ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
         section {
             padding: 20px;
+            text-align: left;
         }
         .post {
             background-color: #fff;
@@ -64,16 +59,18 @@
     </header>
     <section>
         {{if .}}
-        {{range .}}
-        <div class="post">
-            <h3>Тема: <a href="/userd3/updatepost/{{.PostID}}">{{.Title}}</a></h3>
-            <p>Описание темы: {{.Description}}</p>
-            <p>Категория: {{.CategoryName}}</p>
-            <p>Дата создания: {{.CreatedAt}}</p>
-        </div>
-        {{end}}
+            {{range .}}
+                <div class="post">
+                    <h3>Тема: <a href="/userd3/updatepost/{{.PostId}}">{{.Title}}</a></h3>
+                    <p>Описание темы: {{.Description}}</p>
+                    <p>Категория: {{.CategoryName}}</p>
+                    <p>Дата создания: {{.CreateDate}}</p>
+                    <p>Автор: {{.Author}}</p>
+                    <p>Нравится: {{.Like}} | Не нравится: {{.Dislike}}</p>
+                </div>
+            {{end}}
         {{else}}
-        <p>Вы еще не создали ни одной темы</p>
+            <p>Нет доступных постов</p>
         {{end}}
     </section>
     <footer>
