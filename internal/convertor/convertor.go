@@ -76,6 +76,7 @@ func NewConvertGetPosts(resp *http.Response) (*model.GetPost, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return getPosts, nil
 }
 
@@ -124,6 +125,29 @@ func NewConvertVotePost(r *http.Request) ([]byte, error) {
 		LikeStatus: status,
 	}
 	jsonData, err := json.Marshal(votePost)
+	if err != nil {
+		return nil, err
+	}
+	return jsonData, nil
+}
+
+func NewConvertVoteComment(r *http.Request) ([]byte, error) {
+	commentId, err := strconv.Atoi(r.FormValue("commentId"))
+	if err != nil {
+		return nil, err
+	}
+	var status bool
+	switch r.FormValue("vote") {
+	case "true":
+		status = true
+	case "false":
+		status = false
+	}
+	voteComment := model.VoteComment{
+		CommentId:     commentId,
+		LikeStatus: status,
+	}
+	jsonData, err := json.Marshal(voteComment)
 	if err != nil {
 		return nil, err
 	}

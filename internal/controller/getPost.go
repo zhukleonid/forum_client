@@ -31,6 +31,7 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request client registry error", http.StatusInternalServerError)
 		return
 	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
 		result, err := convertor.NewConvertGetPosts(resp)
@@ -38,12 +39,14 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error request get posts", http.StatusInternalServerError)
 			return
 		}
+		for _, v := range result.Comments {
+			fmt.Println(v)
+		}
 		t, err := template.ParseFiles("./ui/html/post.html")
 		if err != nil {
 			http.Error(w, "Error parsing template", http.StatusInternalServerError)
 			return
 		}
-		fmt.Println(result)
 		err = t.ExecuteTemplate(w, "post.html", result)
 		if err != nil {
 			http.Error(w, "Error executing template", http.StatusInternalServerError)

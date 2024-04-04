@@ -92,6 +92,7 @@
         }
         .like-dislike-count {
             margin-left: 5px; /* Отступ для значений */
+            font-size: 14px;
         }
         .comment-form {
             margin-left: 50px;
@@ -137,16 +138,29 @@
         {{end}}
     
         <h4>Комментарии:</h4>
-        {{range .Comments}}
-        <div class="comment">
-            <p>{{.Description}}</p>
-            <p>Автор: {{.User}}</p>
-            <p>Дата создания: {{.CreatedDate}}</p>
-        </div>
-        {{end}}
-    </section>
-    
-    
+            {{range .Comments}}
+            <div class="comment">
+                <p>{{.Description}}</p>
+                <p>Автор: {{.User}}</p>
+                <p>Дата создания: {{.CreatedDate}}</p>
+                <div class="vote-buttons">
+                    <form action="/userd3/votecomment" method="POST">
+                        <input type="hidden" name="commentId" value="{{.ID}}">
+                        <input type="hidden" name="postId" value="{{.Post}}">
+                        <input type="hidden" name="vote" value="true">
+                        <input type="submit" value="Нравится">
+                        <span class="like-dislike-count">{{.Like}}</span>
+                    </form>
+                    <form action="/userd3/votecomment" method="POST">
+                        <input type="hidden" name="commentId" value="{{.ID}}">
+                        <input type="hidden" name="postId" value="{{.Post}}">
+                        <input type="hidden" name="vote" value="false">
+                        <input type="submit" value="Не нравится">
+                        <span class="like-dislike-count">{{.Dislike}}</span>
+                    </form>
+                </div>
+            </div>
+            {{end}}
     <form class="comment-form" action="/userd3/createcomment" method="POST">
         <input type="hidden" name="postId" value="{{.Post.PostId}}">
         <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50"></textarea><br>
