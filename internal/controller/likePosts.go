@@ -8,6 +8,12 @@ import (
 )
 
 func likePost(w http.ResponseWriter, r *http.Request) {
+
+	if len(r.Cookies()) == 0 {
+		http.Redirect(w, r, "http://localhost:8082/login", 300)
+		return
+	}
+	
 	req, err := http.NewRequest("GET", likePosts, nil)
 	if err != nil {
 		http.Error(w, "Request user like post error", http.StatusInternalServerError)

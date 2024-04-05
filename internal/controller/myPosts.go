@@ -7,10 +7,12 @@ import (
 )
 
 func myPosts(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodGet {
-	// 	http.Error(w, "Not method get", http.StatusMethodNotAllowed)
-	// 	return
-	// }
+	
+	if len(r.Cookies()) == 0 {
+		http.Redirect(w, r, "http://localhost:8082/login", 300)
+		return
+	}
+
 	req, err := http.NewRequest("GET", userPost, nil)
 	if err != nil {
 		http.Error(w, "Request user post error", http.StatusInternalServerError)

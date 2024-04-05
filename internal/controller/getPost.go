@@ -9,14 +9,16 @@ import (
 )
 
 func getPost(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodGet {
-	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	// 	return
-	// }
+	
+	if len(r.Cookies()) == 0 {
+		http.Redirect(w, r, "http://localhost:8082/login", 300)
+		return
+	}
+
 	path := r.URL.Path
 	parts := strings.Split(path, "/")
 	id := parts[len(parts)-1]
-	getUserPostId := fmt.Sprintf(getUserPost + "%s", id)
+	getUserPostId := fmt.Sprintf(getUserPost+"%s", id)
 	fmt.Println(getUserPostId)
 
 	req, err := http.NewRequest("GET", getUserPostId, nil)
@@ -24,6 +26,7 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request getUserPost error", http.StatusInternalServerError)
 		return
 	}
+
 	req.AddCookie(r.Cookies()[0])
 	client := http.Client{}
 	resp, err := client.Do(req)

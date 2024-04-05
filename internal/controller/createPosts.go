@@ -10,16 +10,8 @@ import (
 
 func createPost(w http.ResponseWriter, r *http.Request) {
 	if len(r.Cookies()) == 0 {
-		t, err := template.ParseFiles("./ui/html/login.html")
-		if err != nil {
-			http.Error(w, "Error parsing template", http.StatusInternalServerError)
-			return
-		}
-		err = t.ExecuteTemplate(w, "login.html", nil)
-		if err != nil {
-			http.Error(w, "Error executing template", http.StatusInternalServerError)
-			return
-		}
+		http.Redirect(w, r, "http://localhost:8082/login", 300)
+		return
 	}
 	switch r.Method {
 	case http.MethodGet:
@@ -34,6 +26,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodPost:
+		
 		jsonData, err := convertor.NewConvertCreatePost(r)
 		if err != nil {
 			http.Error(w, "Marshal CreatePost error", http.StatusInternalServerError)
@@ -57,6 +50,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 
 		if resp.StatusCode == http.StatusOK {
 			http.Redirect(w, r, "http://localhost:8082/userd3/myposts", 300)
+			return
 		}
 	}
 }

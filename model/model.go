@@ -57,14 +57,16 @@ type CreatePost struct {
 }
 
 type Comment struct {
-	ID          int
-	User        int `json:"user_id"`
-	Post        int `json:"post_id"`
-	Description string
+	ID          int       `json:"id"`
+	User        int       `json:"user_id"`
+	Post        int       `json:"post_id"`
+	Description string    `json:"description"`
 	CreatedDate time.Time `json:"created_at"`
 	UpdatedDate time.Time `json:"updated_at"`
-	Like        int       `json:"likes"`
-	Dislike     int       `json:"dislikes"`
+
+	Name    string `json:"name"`
+	Like    int    `json:"likes"`
+	Dislike int    `json:"dislikes"`
 }
 
 type GetPost struct {

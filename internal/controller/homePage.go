@@ -7,11 +7,7 @@ import (
 )
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodGet {
-	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	// 	return
-	// }
-
+	
 	response, err := http.Get(allPost)
 	if err != nil {
 		http.Error(w, "Error request all posts", http.StatusInternalServerError)

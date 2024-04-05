@@ -69,15 +69,19 @@
         </nav>
     </header>
     <section>
+        {{if .}}
         {{range .Posts}}
         <div class="post">
-            <h3><a href="/userd3/post/{{.PostID}}">{{.Title}}</a></h3>
-            <p>{{.Description}}</p>
+            <h3>Тема: <a href="/userd3/post/{{.PostID}}">{{.Title}}</a></h3>
+            <p>Описание: {{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
             <p>Автор: {{.Author}}</p>
             <p>Дата создания: {{.CreatedAt}}</p>
             <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
         </div>
+        {{end}}
+        {{else}}
+        <p>Темы для обсуждения отсутствуют</p>
         {{end}}
     </section>
     <footer>
@@ -96,15 +100,19 @@
         </nav>
     </header>
     <section>
+        {{if .}}
         {{range .Posts}}
         <div class="post">
-            <h3>{{.Title}}</h3>
-            <p>{{.Description}}</p>
+            <h3>Тема: {{.Title}}</h3>
+            <p>Описание: {{.Description}}</p>
             <p>Категория: {{.CategoryName}}</p>
             <p>Автор: {{.Author}}</p>
             <p>Дата создания: {{.CreatedAt}}</p>
             <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
         </div>
+        {{end}}
+        {{else}}
+        <p>Темы для обсуждения отсутствуют</p>
         {{end}}
     </section>
     <footer>

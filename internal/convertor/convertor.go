@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/model"
 	"net/http"
 	"strconv"
@@ -20,6 +21,16 @@ func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
 }
 
 func NewConvertRegister(r *http.Request) ([]byte, error) {
+	form := validation.New()
+	form.CheckField(form.EmailValid(r.FormValue("email")), "email", "NOT VALID EMAIL")
+	form.CheckField(form.EmptyFieldValid(r.FormValue("email")), "email", "EMPTY FIELD")
+	form.CheckField(form.EmptyFieldValid(r.FormValue("name")), "name", "EMPTY FIELD")
+	form.CheckField(form.MinLengthValid(r.FormValue("password"), 8), "password", fmt.Sprintf("MIN CHARACTERS SHOULD BE 8 BUT YOUR: %v", len(r.FormValue("password"))))
+	form.CheckField(form.MaxLengthValid(r.FormValue("password"), 16), "password", fmt.Sprintf("MAX CHARACTERS SHOULD BE 16 BUT YOUR: %v", len(r.FormValue("password"))))
+	if !form.Valid() {
+		fmt.Println(form.Errors)
+		return nil, errors.New("No valid")
+	}
 	register := model.Register{
 		Name:     r.FormValue("name"),
 		Email:    r.FormValue("email"),
@@ -204,7 +215,7 @@ func NewConvertUpdateCommentUser(r *http.Request) ([]byte, error) {
 	return jsonData, nil
 }
 
-func NewConvertDeleteComment(r *http.Request)([]byte, error) {
+func NewConvertDeleteComment(r *http.Request) ([]byte, error) {
 	commentId, err := strconv.Atoi(r.FormValue("commentId"))
 	if err != nil {
 		return nil, err
@@ -215,7 +226,7 @@ func NewConvertDeleteComment(r *http.Request)([]byte, error) {
 	}
 
 	deleteComment := model.Comment{
-		ID: commentId,
+		ID:   commentId,
 		Post: posttId,
 	}
 	jsonData, err := json.Marshal(deleteComment)

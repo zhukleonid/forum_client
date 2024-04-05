@@ -48,6 +48,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 			}
 			http.SetCookie(w, cookies[0])
 			http.Redirect(w, r, "http://localhost:8082/userd3", 300)
+			return
 		}
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

@@ -141,7 +141,7 @@
             {{range .Comments}}
             <div class="comment">
                 <p>{{.Description}}</p>
-                <p>Автор: {{.User}}</p>
+                <p>Автор: {{.Name}}</p>
                 <p>Дата создания: {{.CreatedDate}}</p>
                 <div class="vote-buttons">
                     <form action="/userd3/votecomment" method="POST">
