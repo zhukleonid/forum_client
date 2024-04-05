@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/model"
 	"net/http"
 	"strconv"
@@ -21,16 +20,6 @@ func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
 }
 
 func NewConvertRegister(r *http.Request) ([]byte, error) {
-	form := validation.New()
-	form.CheckField(form.EmailValid(r.FormValue("email")), "email", "NOT VALID EMAIL")
-	form.CheckField(form.EmptyFieldValid(r.FormValue("email")), "email", "EMPTY FIELD")
-	form.CheckField(form.EmptyFieldValid(r.FormValue("name")), "name", "EMPTY FIELD")
-	form.CheckField(form.MinLengthValid(r.FormValue("password"), 8), "password", fmt.Sprintf("MIN CHARACTERS SHOULD BE 8 BUT YOUR: %v", len(r.FormValue("password"))))
-	form.CheckField(form.MaxLengthValid(r.FormValue("password"), 16), "password", fmt.Sprintf("MAX CHARACTERS SHOULD BE 16 BUT YOUR: %v", len(r.FormValue("password"))))
-	if !form.Valid() {
-		fmt.Println(form.Errors)
-		return nil, errors.New("No valid")
-	}
 	register := model.Register{
 		Name:     r.FormValue("name"),
 		Email:    r.FormValue("email"),
@@ -62,6 +51,7 @@ func NewConvertLogin(r *http.Request) ([]byte, error) {
 func NewConvertCookie(resp *http.Response) ([]*http.Cookie, error) {
 	cookies := resp.Cookies()
 	if len(cookies) == 0 {
+		fmt.Println("check")
 		return nil, errors.New("no cookies found in the response")
 	}
 	return cookies, nil
@@ -233,5 +223,20 @@ func NewConvertDeleteComment(r *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	return jsonData, nil
+}
+
+func NewConvertLogout(r *http.Request) ([]byte, error) {
+	cookie := r.Cookies()
+	uuid := cookie[0].String()
+	fmt.Println(uuid)
+	logoutUser := model.LogoutUser{
+		UUID: uuid,
+	}
+	jsonData, err := json.Marshal(logoutUser)
+	if err != nil {
+		return nil, err
+	}
+
 	return jsonData, nil
 }

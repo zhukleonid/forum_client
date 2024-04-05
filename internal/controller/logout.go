@@ -2,23 +2,17 @@ package controller
 
 import (
 	"bytes"
-	"fmt"
 	"lzhuk/clients/internal/convertor"
 	"net/http"
 )
 
-func createComment(w http.ResponseWriter, r *http.Request) {
-	// if r.Method != http.MethodPost {
-	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	// 	return
-	// }
-
-	jsonData, err := convertor.NewConvertCreateComment(r)
+func logoutUser(w http.ResponseWriter, r *http.Request) {
+	jsonData, err := convertor.NewConvertLogout(r)
 	if err != nil {
-		http.Error(w, "Marshal CreateComment error", http.StatusInternalServerError)
+		http.Error(w, "Еггог convert logout", http.StatusInternalServerError)
 		return
 	}
-	req, err := http.NewRequest("POST", createComments, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", logoutUsers, bytes.NewBuffer(jsonData))
 	if err != nil {
 		http.Error(w, "Request CreateComment error", http.StatusInternalServerError)
 		return
@@ -34,7 +28,13 @@ func createComment(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusOK {
-		link := fmt.Sprintf("http://localhost:8082/userd3/post/%s", r.FormValue("postId"))
-		http.Redirect(w, r, link, 300)
+		expiredCookie := &http.Cookie{
+			Name:   "CookieUUID",
+			Value:  "",
+			MaxAge: -1,
+			Path:   "/",
+		}
+		http.SetCookie(w, expiredCookie)
+		http.Redirect(w, r, "http://localhost:8082", 300)
 	}
 }

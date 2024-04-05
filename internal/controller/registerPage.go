@@ -2,8 +2,10 @@ package controller
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/validation"
 	"net/http"
 )
 
@@ -21,6 +23,25 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodPost:
+		form := validation.New()
+		form.CheckField(form.EmailValid(r.FormValue("email")), "Не корректная почта", "")
+		form.CheckField(form.EmptyFieldValid(r.FormValue("email")), "Пустой ввод почты не допускается", "")
+		form.CheckField(form.EmptyFieldValid(r.FormValue("name")), "Пустой ввод имени не допускается", "")
+		form.CheckField(form.NameValid(r.FormValue("name")), "Не корректное имя", "")
+		form.CheckField(form.PasswordValid(r.FormValue("password")), "Не корректный пароль", "")
+		if !form.Valid() {
+			fmt.Println(form.Errors)
+			t, err := template.ParseFiles("./ui/html/register.html")
+			if err != nil {
+				http.Error(w, "Error parsing template", http.StatusInternalServerError)
+				return
+			}
+			err = t.ExecuteTemplate(w, "register.html", form.Errors)
+			if err != nil {
+				http.Error(w, "Error executing template", http.StatusInternalServerError)
+				return
+			}
+		}
 		jsonData, err := convertor.NewConvertRegister(r)
 		if err != nil {
 			http.Error(w, "Marshal registry error", http.StatusInternalServerError)
@@ -40,8 +61,9 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 		}
 		defer resp.Body.Close()
 
-		if resp.StatusCode == http.StatusOK {
+		if resp.StatusCode == http.StatusCreated {
 			http.Redirect(w, r, "http://localhost:8082/login", 300)
+			return
 		}
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

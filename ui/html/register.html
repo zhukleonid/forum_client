@@ -62,10 +62,25 @@
             left: 0;
             width: 100%;
         }
+        h3 {
+            background-color: rgb(255, 255, 255);
+            color: rgb(203, 0, 0);
+            font-size: 12px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        h4 {
+            font-size: 14px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <h1>Регистрация пользователя</h1>
+    {{ if . }}
     <form action="/register" method="post">
         <label for="name">Имя:</label>
         <input type="text" id="name" name="name" required><br>
@@ -77,7 +92,34 @@
         <input type="password" id="password" name="password" required><br>
 
         <button type="submit">Зарегистрироваться</button>
+        {{ range $key, $value := . }}
+        <h3><strong>{{ $key }}</strong> {{ index $value 0 }}</h3>
+        {{ end }}
+    {{ else }}
     </form>
+    <form action="/register" method="post">
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required><br>
+        <h4>Имя пользователя допускает:</h4>
+        <h4> - буквы русского и английского алфавита</h4>
+        <h4> - цифры и нижние подчеркивания</h4>
+
+        <label for="email">Почта:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required><br>
+        <h4>Пароль должен содержать:</h4>
+    
+            <h4> - одну заглавную букву,</h4>
+            <h4> - одну строчную букву,</h4>
+            <h4> - одну цифру,</h4> 
+            <h4> - один специальный символ,</h4>
+            <h4> - имееть длину не менее 8 символов</h4>
+
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    {{ end }}
     <footer>
         <p>© 2024 | Твой диаметр</p>
     </footer>

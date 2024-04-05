@@ -94,3 +94,7 @@ type VoteComment struct {
 	CommentId  int  `json:"comment_id"`
 	LikeStatus bool `json:"status"`
 }
+
+type LogoutUser struct {
+	UUID string
+}
