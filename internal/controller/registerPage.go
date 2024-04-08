@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
@@ -67,7 +66,6 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			defer resp.Body.Close()
-			fmt.Println(resp.Body)
 			// Проверка кода статуса ответа сервера
 			switch resp.StatusCode {
 			// Получен статус код 201 об успешной регистрации пользователя в системе

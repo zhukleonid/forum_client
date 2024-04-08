@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var ClientName string // Хранит имя (никнейм) пользователя
+
 func Router(cfg config.Config) *http.Server {
 	router := http.NewServeMux()
 
