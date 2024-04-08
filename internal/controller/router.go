@@ -7,33 +7,33 @@ import (
 )
 
 func Router(cfg config.Config) *http.Server {
-	mux := http.NewServeMux()
+	router := http.NewServeMux()
 
-	mux.HandleFunc("/", startPage)
-	mux.HandleFunc("/userd3", homePage)
-	mux.HandleFunc("/register", registerPage)
-	mux.HandleFunc("/login", loginPage)
-	mux.HandleFunc("/userd3/posts", createPost)
-	mux.HandleFunc("/userd3/myposts", myPosts)
-	mux.HandleFunc("/userd3/post/", getPost)
-	mux.HandleFunc("/userd3/createcomment", createComment)
-	mux.HandleFunc("/userd3/updatepost/", updatePost)
-	mux.HandleFunc("/userd3/deletepost/", deletePost)
-	mux.HandleFunc("/userd3/votepost", votePost)
-	mux.HandleFunc("/userd3/votecomment", voteComment)
-	mux.HandleFunc("/userd3/likeposts", likePost)
-	mux.HandleFunc("/userd3/updatecomment", updateComment)
-	mux.HandleFunc("/userd3/deletecomment", deleteComment)
-	mux.HandleFunc("/logout", logoutUser)
+	router.HandleFunc("/", startPage)
+	router.HandleFunc("/userd3", homePage)
+	router.HandleFunc("/register", registerPage)
+	router.HandleFunc("/login", loginPage)
+	router.HandleFunc("/userd3/posts", createPost)
+	router.HandleFunc("/userd3/myposts", myPosts)
+	router.HandleFunc("/userd3/post/", getPost)
+	router.HandleFunc("/userd3/createcomment", createComment)
+	router.HandleFunc("/userd3/updatepost/", updatePost)
+	router.HandleFunc("/userd3/deletepost/", deletePost)
+	router.HandleFunc("/userd3/votepost", votePost)
+	router.HandleFunc("/userd3/votecomment", voteComment)
+	router.HandleFunc("/userd3/likeposts", likePost)
+	router.HandleFunc("/userd3/updatecomment", updateComment)
+	router.HandleFunc("/userd3/deletecomment", deleteComment)
+	router.HandleFunc("/logout", logoutUser)
 
 	fileServer := http.FileServer(http.Dir("ui/css"))
-	mux.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))
+	router.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))
 	s := &http.Server{
 		Addr:         cfg.Port,
 		ReadTimeout:  time.Duration(cfg.ReadTimeout) * time.Second,  // время ожидания для чтения данных
 		WriteTimeout: time.Duration(cfg.WriteTimeout) * time.Second, // время ожидания для записи данных
 		IdleTimeout:  time.Duration(cfg.IdleTimeout) * time.Second,  // время простоя
-		Handler:      mux,
+		Handler:      router,
 	}
 	return s
 }

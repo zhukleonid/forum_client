@@ -19,20 +19,6 @@ func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
 	return posts, nil
 }
 
-func NewConvertRegister(r *http.Request) ([]byte, error) {
-	register := model.Register{
-		Name:     r.FormValue("name"),
-		Email:    r.FormValue("email"),
-		Password: r.FormValue("password"),
-	}
-
-	jsonData, err := json.Marshal(register)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonData, nil
-}
 
 func NewConvertLogin(r *http.Request) ([]byte, error) {
 	login := model.Login{
