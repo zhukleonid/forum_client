@@ -25,7 +25,7 @@ func myPosts(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Request client registry error", http.StatusInternalServerError)
 		return
 	}
-	userPosts, err := convertor.NewConvertAllPosts(resp)
+	userPosts, err := convertor.ConvertAllPosts(resp)
 	if err != nil {
 		http.Error(w, "error", http.StatusInternalServerError)
 		return

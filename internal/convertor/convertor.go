@@ -8,15 +8,6 @@ import (
 	"strconv"
 )
 
-func NewConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
-	posts := model.AllPosts{}
-	fmt.Println(resp.Body)
-	err := json.NewDecoder(resp.Body).Decode(&posts)
-	if err != nil {
-		return nil, err
-	}
-	return posts, nil
-}
 
 func NewConvertCreatePost(r *http.Request) ([]byte, error) {
 	createPost := model.CreatePost{

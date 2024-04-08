@@ -104,7 +104,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 				}
 				defer resp.Body.Close()
 				if resp.StatusCode == http.StatusOK {
-					userPosts, err := convertor.NewConvertAllPosts(resp)
+					userPosts, err := convertor.ConvertAllPosts(resp)
 					if err != nil {
 						http.Error(w, "error", http.StatusInternalServerError)
 						return
