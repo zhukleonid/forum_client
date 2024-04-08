@@ -19,8 +19,8 @@
         <input type="password" id="password" name="password" required><br>
 
         <button type="submit">Зарегистрироваться</button>
-        {{ range $key, $value := . }}
-        <h3><strong>{{ $key }}</strong> {{ index $value 0 }}</h3>
+        {{range .Errors}}
+        <h3><strong>{{.}}</strong></h3>
         {{ end }}
     {{ else }}
     </form>
