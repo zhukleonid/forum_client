@@ -33,6 +33,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 		validDate, errValid := validation.ValidDate(r)
 		// Рендеринг страницы при невалидных данных регистрации пользователем
 		if validDate == false {
+			w.WriteHeader(http.StatusBadRequest)
 			err = t.ExecuteTemplate(w, "register.html", errValid)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
@@ -81,13 +82,14 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			switch {
-				// Полуена ошибка что почта уже используется 
+			// Получена ошибка что почта уже используется
 			case discriptionMsg.Discription == "Email already exist":
 				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
 				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
 				return
+				// Получена ошибка что введене неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
-				errorPage(w, errors.InvalidCredentials, http.StatusUnauthorized)
+				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
 				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
