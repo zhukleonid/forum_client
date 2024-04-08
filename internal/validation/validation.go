@@ -49,6 +49,10 @@ func (f *Form) PasswordValid(password string) bool {
 	)
 
 	for _, char := range password {
+		// Проверка на ASCII
+		if char > 32 && char < 127 {
+			hasAscii = true
+		}
 		switch {
 		// Поиск на заглавную букву
 		case unicode.IsUpper(char):
@@ -62,9 +66,7 @@ func (f *Form) PasswordValid(password string) bool {
 			// Поиск на знак пунктуации или символ
 		case unicode.IsPunct(char) || unicode.IsSymbol(char):
 			hasSpecial = true
-			// Проверка на ASCII
-		case char > 32 && char < 127:
-			hasAscii = true
+
 		}
 	}
 	// Должен содержать как минимум 8 символов, включая по крайней мере одну заглавную букву,
