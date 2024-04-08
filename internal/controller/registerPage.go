@@ -2,13 +2,13 @@ package controller
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
-	"net/http"
-
 	"lzhuk/clients/internal/convertor"
 	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/pkg/config/errors"
+	"net/http"
 )
 
 func registerPage(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +66,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer resp.Body.Close()
-
+		fmt.Println(resp.Body)
 		// Проверка кода статуса ответа сервера
 		switch resp.StatusCode {
 		// Получен статус код 201 об успешной регистрации пользователя в системе
@@ -74,8 +74,28 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "http://localhost:8082/login", 303)
 			// Получен статус код 500 об ошибке на сервере
 		case http.StatusInternalServerError:
+			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+				return
+			}
+			switch {
+				// Полуена ошибка что почта уже используется 
+			case discriptionMsg.Discription == "Email already exist":
+				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
+				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				return
+			case discriptionMsg.Discription == "Invalid Credentials":
+				errorPage(w, errors.InvalidCredentials, http.StatusUnauthorized)
+				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				return
+			case discriptionMsg.Discription == "Not Found Any Data":
+				return
+			}
+
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка на сервере при регистрации пользователя.")
+			log.Printf("Произошла ошибка на сервере при регистрации пользователя.ss")
 			return
 			// Получен статус код 405 об неверном методе запроса с сервера
 		case http.StatusMethodNotAllowed:

@@ -28,10 +28,6 @@ type Post struct {
 }
 
 
-type Error struct {
-	Status      int
-	Discription string
-}
 
 type Login struct {
 	Email    string
