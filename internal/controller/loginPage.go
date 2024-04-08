@@ -56,6 +56,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 
 		switch resp.StatusCode {
 		case http.StatusOK:
+			var clientName string
 			// Получение сгенерированных сервером куки
 			cookie, err := convertor.ConvertFirstCookie(resp)
 			if err != nil {
@@ -64,12 +65,14 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			// Получение в глобальную переменную имени вошедшего пользователя
-			ClientName, err = convertor.DecodeClientName(resp)
+			clientName, err = convertor.DecodeClientName(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Произошла ошибка при получении имени пользователя")
 				return
 			}
+			// Записываем клиента в хеш-таблицу
+			Username[cookie.Value] = clientName
 			// Записываем в ответ браузеру полученный экземпляр куки от сервера
 			http.SetCookie(w, cookie)
 			// Переход на домашнюю страницу пользователя

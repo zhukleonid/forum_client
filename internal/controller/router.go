@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var ClientName string // Хранит имя (никнейм) пользователя
+var Username = make(map[string]string) // Хеш-таблица для хранение имени (никнейма) пользователя
 
 func Router(cfg config.Config) *http.Server {
 	router := http.NewServeMux()

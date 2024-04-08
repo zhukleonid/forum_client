@@ -38,10 +38,28 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			var nicname string // Хранит имя пользователя
+			var cookie bool
+
+			if len(r.Cookies()) < 1 {
+				nicname = ""
+				cookie = false
+			} else {
+				if r.Cookies()[0].Name == "CookieUUID" {
+					cookie = true
+				}
+				value, ok := Username[r.Cookies()[0].Value]
+				if ok {
+					nicname = value
+				} else {
+					nicname = ""
+				}
+			}
+
 			data := map[string]interface{}{
-				"Username": ClientName,                          // Глобальное имя пользователя
-				"Posts":    result,                              // Все посты из БД
-				"Cookie":   r.Cookies()[0].Name == "CookieUUID", // Передаем true, если есть куки, иначе false
+				"Username": nicname, // Глобальное имя пользователя
+				"Posts":    result,  // Все посты из БД
+				"Cookie":   cookie,  // Передаем true, если есть куки, иначе false
 			}
 
 			err = t.ExecuteTemplate(w, "home.html", data)
