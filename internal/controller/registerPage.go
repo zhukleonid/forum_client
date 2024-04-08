@@ -87,29 +87,29 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 					errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
 					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
 					return
-					// Получена ошибка что введене неверные учетные данные
+					// Получена ошибка что введены неверные учетные данные
 				case discriptionMsg.Discription == "Invalid Credentials":
 					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
 					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
 					return
 				case discriptionMsg.Discription == "Not Found Any Data":
+					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
+					log.Printf("Зарезервировано")
 					return
 				}
-
-				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка на сервере при регистрации пользователя.ss")
-				return
 				// Получен статус код 405 об неверном методе запроса с сервера
 			case http.StatusMethodNotAllowed:
 				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
 				log.Printf("При передаче запроса на регистрацию нового пользователя не верный метод запроса")
 				return
+				// Получен статус код не 201, 405 или 500
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Произошла ошибка на сервере при регистрации пользователя.")
 				return
 			}
 		}
+		// Метод запроса с браузера не POST и не GET
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
 		log.Printf("При передаче запроса на регистрацию нового пользователя не верный метод запроса")
