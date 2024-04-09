@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
@@ -39,7 +38,6 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			fmt.Println(result)
 			var nicname string // Хранит имя пользователя
 			var cookie bool    // Хранит наличие куки
 
@@ -60,6 +58,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 						nicname = value
 					} else {
 						nicname = ""
+						http.Redirect(w, r, "http://localhost:8082/login", 303)
+						return
 					}
 				} else {
 					nicname = ""

@@ -13,3 +13,15 @@ type AllPosts []struct {
 	Like         int       `json:"likes"`
 	Dislike      int       `json:"dislikes"`
 }
+
+type AllPostsConvertDate []struct {
+	PostID       int
+	UserID       int
+	CategoryName string
+	Title        string
+	Description  string
+	CreatedAt    string
+	Author       string
+	Like         int
+	Dislike      int
+}

@@ -4,37 +4,28 @@ import (
 	"encoding/json"
 	"lzhuk/clients/model"
 	"net/http"
-	"time"
 )
 
 // Функция конвертации данных полученных при запросе всех постов
-func ConvertAllPosts(resp *http.Response) (model.AllPosts, error) {
+func ConvertAllPosts(resp *http.Response) (model.AllPostsConvertDate, error) {
 	posts := model.AllPosts{}
 	err := json.NewDecoder(resp.Body).Decode(&posts)
 	if err != nil {
 		return nil, err
 	}
-
+	convertDatePosts := make(model.AllPostsConvertDate, len(posts))
 	for i := range posts {
 		date := posts[i].CreatedAt
-		dateString := date.String()
-		layout := "2006-01-02 15:04:05.999999999 -0700 -07"
-		dateTime, err := time.Parse(layout, dateString)
-		if err != nil {
-			// errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			// log.Printf("Произошла ошибка при преобразовании формата времени в строку в постах. Ошибка: %v", err)
-			return nil, err
-		}
-		formattedStr := dateTime.Format("2006-01-02 15:04:05")
-		newT, err := time.Parse("2006-01-02 15:04:05", formattedStr)
-		if err != nil {
-			// errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			// log.Printf("Произошла ошибка при преобразовании формата времени из строки в постах. Ошибка: %v", err)
-			return nil, err
-		}
-		posts[i].CreatedAt = newT
-		// fmt.Println(v.CreatedAt)
+		formattedStr := date.Format("2006-01-02 15:04:05")
+		convertDatePosts[i].PostID = posts[i].PostID
+		convertDatePosts[i].UserID = posts[i].UserID
+		convertDatePosts[i].CategoryName = posts[i].CategoryName
+		convertDatePosts[i].Title = posts[i].Title
+		convertDatePosts[i].Description = posts[i].Description
+		convertDatePosts[i].CreatedAt = formattedStr
+		convertDatePosts[i].Author = posts[i].Author
+		convertDatePosts[i].Like = posts[i].Like
+		convertDatePosts[i].Dislike = posts[i].Dislike
 	}
-
-	return posts, nil
+	return convertDatePosts, nil
 }

@@ -9,19 +9,7 @@ import (
 )
 
 
-func NewConvertCreatePost(r *http.Request) ([]byte, error) {
-	createPost := model.CreatePost{
-		CategoryName: r.FormValue("category"),
-		Title:        r.FormValue("title"),
-		Description:  r.FormValue("description"),
-	}
 
-	jsonData, err := json.Marshal(createPost)
-	if err != nil {
-		return nil, err
-	}
-	return jsonData, nil
-}
 
 func NewConvertGetPosts(resp *http.Response) (*model.GetPost, error) {
 	getPosts := &model.GetPost{}
