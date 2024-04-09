@@ -31,7 +31,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 		}
 		defer resp.Body.Close()
 		if resp.StatusCode == http.StatusOK {
-			result, err := convertor.NewConvertGetPosts(resp)
+			result, err := convertor.ConvertGetPosts(resp)
 			if err != nil {
 				http.Error(w, "Error request get posts", http.StatusInternalServerError)
 				return

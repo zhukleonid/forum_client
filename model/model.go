@@ -2,8 +2,6 @@ package model
 
 import "time"
 
-
-
 type Post struct {
 	PostId       int    `json:"post_id"`
 	UserId       int    `json:"user_id"`
@@ -17,8 +15,6 @@ type Post struct {
 	Dislike int    `json:"dislikes"`
 }
 
-
-
 type Login struct {
 	Email    string
 	Password string
@@ -30,8 +26,6 @@ type Cookie struct {
 	Path   string
 	MaxAge int
 }
-
-
 
 type Comment struct {
 	ID          int       `json:"id"`
@@ -49,11 +43,6 @@ type Comment struct {
 type GetPost struct {
 	Post     *Post
 	Comments []*Comment
-}
-
-type CreateComment struct {
-	Post        int    `json:"post_id"`
-	Description string `json:"description"`
 }
 
 type UpdateComment struct {

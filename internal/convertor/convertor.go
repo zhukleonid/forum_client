@@ -8,35 +8,6 @@ import (
 	"strconv"
 )
 
-
-
-
-func NewConvertGetPosts(resp *http.Response) (*model.GetPost, error) {
-	getPosts := &model.GetPost{}
-	err := json.NewDecoder(resp.Body).Decode(getPosts)
-	if err != nil {
-		return nil, err
-	}
-
-	return getPosts, nil
-}
-
-func NewConvertCreateComment(r *http.Request) ([]byte, error) {
-	postId, err := strconv.Atoi(r.FormValue("postId"))
-	if err != nil {
-		return nil, err
-	}
-	createComment := model.CreateComment{
-		Post:        postId,
-		Description: r.FormValue("comment"),
-	}
-	jsonData, err := json.Marshal(createComment)
-	if err != nil {
-		return nil, err
-	}
-	return jsonData, nil
-}
-
 func NewConvertUpdatePost(r *http.Request) ([]byte, error) {
 	updatePost := model.Post{
 		Title:       r.FormValue("title"),

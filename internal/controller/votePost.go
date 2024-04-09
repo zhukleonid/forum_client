@@ -29,7 +29,11 @@ func votePost(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusOK {
-		link := fmt.Sprintf("http://localhost:8082/userd3/post/%s", r.FormValue("postId"))
-		http.Redirect(w, r, link, 300)
+		newReq, err := http.NewRequest("GET", fmt.Sprintf("http://localhost:8082/userd3/post/%s", r.FormValue("postId")), nil)
+		if err != nil {
+			http.Error(w, "Request client registry error", http.StatusInternalServerError)
+			return
+		}
+		http.Redirect(w, r, newReq.URL.String(), 302)
 	}
 }
