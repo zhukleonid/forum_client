@@ -89,7 +89,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 			// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Невалидные данные")
 				return
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)

@@ -88,7 +88,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 					// Получена ошибка что введены неверные учетные данные
 				case discriptionMsg.Discription == "Invalid Credentials":
 					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+					log.Printf("Невалидные данные")
 					return
 				case discriptionMsg.Discription == "Not Found Any Data":
 					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
@@ -38,36 +39,77 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			fmt.Println(result)
 			var nicname string // Хранит имя пользователя
-			var cookie bool
+			var cookie bool    // Хранит наличие куки
 
-			if len(r.Cookies()) < 1 {
+			// Проверка на наличие куки
+			switch {
+			// Если куки не получены передаем пустое имя и отсутствие куки
+			case len(r.Cookies()) < 1:
 				nicname = ""
 				cookie = false
-			} else {
+				// При наличии куки проверяем их валидность
+			default:
+				// Проверяем что куки сгенерированы нашим сервисом сервера
 				if r.Cookies()[0].Name == "CookieUUID" {
 					cookie = true
-				}
-				value, ok := Username[r.Cookies()[0].Value]
-				if ok {
-					nicname = value
+					// Получаем по UUID имя пользователя
+					value, ok := Username[r.Cookies()[0].Value]
+					if ok {
+						nicname = value
+					} else {
+						nicname = ""
+					}
 				} else {
 					nicname = ""
+					cookie = false
 				}
 			}
 
+			// Данные для рендеринга страницы
 			data := map[string]interface{}{
 				"Username": nicname, // Глобальное имя пользователя
 				"Posts":    result,  // Все посты из БД
 				"Cookie":   cookie,  // Передаем true, если есть куки, иначе false
 			}
 
+			// Рендеринг домашней страницы
 			err = t.ExecuteTemplate(w, "home.html", data)
 			if err != nil {
-				http.Error(w, "Error executing template", http.StatusInternalServerError)
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при рендеринге шаблона домашней страницы пользователя. Ошибка: %v", err)
+				return
+			}
+
+		case http.StatusInternalServerError:
+			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+				return
+			}
+			switch {
+			// Получена ошибка что почта уже используется
+			case discriptionMsg.Discription == "Email already exist":
+				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
+				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				return
+				// Получена ошибка что введены неверные учетные данные
+			case discriptionMsg.Discription == "Invalid Credentials":
+				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
+				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				return
+			case discriptionMsg.Discription == "Not Found Any Data":
+				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
+				log.Printf("Зарезервировано")
 				return
 			}
 		}
+		// Метод запроса с браузера не POST и не GET
 	default:
+		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+		log.Printf("При передаче запроса на домашнюю страницу не верный метод запроса")
+		return
 	}
 }
