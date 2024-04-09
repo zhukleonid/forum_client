@@ -80,6 +80,9 @@
         <div>
             <button type="submit">Отправить</button>
         </div>
+        {{range .Errors}}
+        <h3><strong>{{.}}</strong></h3>
+        {{ end }}
     </form>
 </body>
 </html>

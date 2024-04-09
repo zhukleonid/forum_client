@@ -2,19 +2,27 @@ package controller
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
+	"strings"
 )
 
 func createPost(w http.ResponseWriter, r *http.Request) {
-	if len(r.Cookies()) == 0 {
-		http.Redirect(w, r, "http://localhost:8082/login", 300)
+	// Проверяем что в запросе присутствуют куки с валидным имененем
+	switch {
+	case len(r.Cookies()) < 1:
+		http.Redirect(w, r, "http://localhost:8082/login", 302)
+		return
+	case !strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"):
+		fmt.Println(strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"))
+		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
 	}
-
 	// Создание шаблона для страницы создания поста
 	t, err := template.ParseFiles("./ui/html/create_post.html")
 	if err != nil {
@@ -33,31 +41,82 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodPost:
-		// Конвертация данных при создании нового поста
-		jsonData, err := convertor.ConvertCreatePost(r)
-		if err != nil {
-			http.Error(w, "Marshal CreatePost error", http.StatusInternalServerError)
-			return
+		// Проверка на валидность пользовательских данных
+		validDatePost, errValid := validation.ValidDatePost(r)
+		// Рендеринг страницы при невалидных данных создания поста пользователем
+		if validDatePost == false {
+			w.WriteHeader(http.StatusBadRequest)
+			err = t.ExecuteTemplate(w, "create_post.html", &errValid)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при рендеринге шаблона страницы создания поста пользователем при проверке на валидность данных. Ошибка: %v", err)
+				return
+			}
+		} else {
+			// Конвертация данных при создании нового поста
+			jsonData, err := convertor.ConvertCreatePost(r)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при конвертации данных для создания нового поста в JSON. Ошибка: %v", err)
+				return
+			}
+			// Создание POST запроса на внесение информации о новом посте
+			req, err := http.NewRequest("POST", createPosts, bytes.NewBuffer(jsonData))
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при создании запроса о новом посте на сервис сервера. Ошибка: %v", err)
+				return
+			}
+			// Добавление из браузера куки в запрос на сервер
+			req.AddCookie(r.Cookies()[0])
+			req.Header.Set("Content-Type", "application/json")
+			// Создаем структуру нового клиента
+			client := http.Client{}
+			// Отправляем запрос на сервер
+			resp, err := client.Do(req)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при передаче запроса об создании нового поста на сервис сервера. Ошибка: %v", err)
+				return
+			}
+			defer resp.Body.Close()
+			switch resp.StatusCode {
+			case http.StatusCreated:
+				http.Redirect(w, r, "http://localhost:8082/userd3/myposts", 302)
+				return
+			case http.StatusInternalServerError:
+				discriptionMsg, err := convertor.DecodeErrorResponse(resp)
+				if err != nil {
+					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+					log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+					return
+				}
+				switch {
+				// Получена ошибка что почта уже используется
+				case discriptionMsg.Discription == "Email already exist":
+					errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
+					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+					return
+					// Получена ошибка что введены неверные учетные данные
+				case discriptionMsg.Discription == "Invalid Credentials":
+					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
+					log.Printf("Не валидные данные")
+					return
+				case discriptionMsg.Discription == "Not Found Any Data":
+					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
+					log.Printf("Не найдено")
+					return
+				default:
+					errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+					log.Printf("Получена ошибка сервера от сервиса сервера")
+					return
+				}
+			}
 		}
-
-		req, err := http.NewRequest("POST", createPosts, bytes.NewBuffer(jsonData))
-		if err != nil {
-			http.Error(w, "Request registry error", http.StatusInternalServerError)
-			return
-		}
-		req.AddCookie(r.Cookies()[0])
-		req.Header.Set("Content-Type", "application/json")
-		client := http.Client{}
-		resp, err := client.Do(req)
-		if err != nil {
-			http.Error(w, "Request client registry error", http.StatusInternalServerError)
-			return
-		}
-		defer resp.Body.Close()
-
-		if resp.StatusCode == http.StatusOK {
-			http.Redirect(w, r, "http://localhost:8082/userd3/myposts", 300)
-			return
-		}
+		// Метод запроса с браузера не POST и не GET
+	default:
+		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+		log.Printf("При передаче запроса на домашнюю страницу не верный метод запроса")
+		return
 	}
 }

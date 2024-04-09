@@ -88,11 +88,15 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 					// Получена ошибка что введены неверные учетные данные
 				case discriptionMsg.Discription == "Invalid Credentials":
 					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-					log.Printf("Невалидные данные")
+					log.Printf("Не валидные данные")
 					return
 				case discriptionMsg.Discription == "Not Found Any Data":
 					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-					log.Printf("Зарезервировано")
+					log.Printf("Не найдено")
+					return
+				default:
+					errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+					log.Printf("Получена ошибка сервера от сервиса сервера")
 					return
 				}
 				// Получен статус код 405 об неверном методе запроса с сервера

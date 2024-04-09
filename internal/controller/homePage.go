@@ -38,9 +38,10 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			var nicname string // Хранит имя пользователя
-			var cookie bool    // Хранит наличие куки
-
+			var (
+				nicname string // Хранит имя пользователя
+				cookie  bool   // Хранит наличие куки
+			)
 			// Проверка на наличие куки
 			switch {
 			// Если куки не получены передаем пустое имя и отсутствие куки
@@ -98,11 +99,15 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Не валидные данные")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
 				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Зарезервировано")
+				log.Printf("Не найдено")
+				return
+			default:
+				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на создание поста")
 				return
 			}
 		}

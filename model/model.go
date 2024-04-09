@@ -31,11 +31,7 @@ type Cookie struct {
 	MaxAge int
 }
 
-type CreatePost struct {
-	CategoryName string `json:"category_name"`
-	Title        string
-	Description  string
-}
+
 
 type Comment struct {
 	ID          int       `json:"id"`
