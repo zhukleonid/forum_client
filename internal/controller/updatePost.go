@@ -108,8 +108,8 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 		jsonData, err := convertor.ConvertUpdatePost(r)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при конвертации данных c изменениями внесенными пользователем о посте для передачи на сервер. Ошибка: %v", err)
-				return
+			log.Printf("Произошла ошибка при конвертации данных c изменениями внесенными пользователем о посте для передачи на сервер. Ошибка: %v", err)
+			return
 		}
 		// Формирование URL  c конкретным id поста для редактирования
 		updatePostsId := fmt.Sprintf(updatePosts+"%s", r.FormValue("postId"))
@@ -117,12 +117,12 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 		req, err := http.NewRequest("PUT", updatePostsId, bytes.NewBuffer(jsonData))
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при подготовке запроса об изменениях данных в посте. Ошибка: %v", err)
-				return
+			log.Printf("Произошла ошибка при подготовке запроса об изменениях данных в посте. Ошибка: %v", err)
+			return
 		}
 		// Записываем куки из браузера в запрос на сервер
 		req.AddCookie(r.Cookies()[0])
-		// Указываем формат передачи данных 
+		// Указываем формат передачи данных
 		req.Header.Set("Content-Type", "application/json")
 		// Создаем структуру нового клиента
 		client := http.Client{}
@@ -130,72 +130,53 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 		resp, err := client.Do(req)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при передаче запроса на сервис сервера об изменениях данных в посте. Ошибка: %v", err)
-				return
+			log.Printf("Произошла ошибка при передаче запроса на сервис сервера об изменениях данных в посте. Ошибка: %v", err)
+			return
 		}
 		defer resp.Body.Close()
 
 		switch resp.StatusCode {
 		case http.StatusAccepted:
-			
+			// Формируем URL запроса на сервис сервера с конкретным id поста
+			newReq, err := http.NewRequest("GET", fmt.Sprintf("http://localhost:8082/userd3/post/%s", r.FormValue("postId")), nil)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при передаче запроса на сервис сервера об изменениях данных в посте. Ошибка: %v", err)
+				return
+			}
+			http.Redirect(w, r, newReq.URL.String(), 302)
 		case http.StatusInternalServerError:
-		case default:
-		}
-		if resp.StatusCode == http.StatusOK {
-			path := r.URL.Path
-			parts := strings.Split(path, "/")
-			id := parts[len(parts)-1]
-			getUserPostId := fmt.Sprintf(getUserPost+"%s", id)
-
-			req, err := http.NewRequest("GET", getUserPostId, nil)
+			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
-				http.Error(w, "Request getUserPost error", http.StatusInternalServerError)
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об данных о посте который пользователь будет редактировать")
 				return
 			}
-			req.AddCookie(r.Cookies()[0])
-			client := http.Client{}
-			resp, err := client.Do(req)
-			if err != nil {
-				http.Error(w, "Request client registry error", http.StatusInternalServerError)
+			switch {
+			// Получена ошибка что почта уже используется
+			case discriptionMsg.Discription == "Email already exist":
+				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
+				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				return
+				// Получена ошибка что введены неверные учетные данные
+			case discriptionMsg.Discription == "Invalid Credentials":
+				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
+				log.Printf("Не валидные данные")
+				return
+			case discriptionMsg.Discription == "Not Found Any Data":
+				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
+				log.Printf("Не найдено")
+				return
+			default:
+				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
 				return
 			}
-			defer resp.Body.Close()
-			if resp.StatusCode == http.StatusOK {
-				req, err := http.NewRequest("GET", userPost, nil)
-				if err != nil {
-					http.Error(w, "Request user post error", http.StatusInternalServerError)
-					return
-				}
-				req.AddCookie(r.Cookies()[0])
-				client := http.Client{}
-				resp, err := client.Do(req)
-				if err != nil {
-					http.Error(w, "Request client registry error", http.StatusInternalServerError)
-					return
-				}
-				defer resp.Body.Close()
-				if resp.StatusCode == http.StatusOK {
-					userPosts, err := convertor.ConvertAllPosts(resp)
-					if err != nil {
-						http.Error(w, "error", http.StatusInternalServerError)
-						return
-					}
-					t, err := template.ParseFiles("./ui/html/user_posts.html")
-					if err != nil {
-						http.Error(w, "Error parsing template", http.StatusInternalServerError)
-						return
-					}
 
-					err = t.ExecuteTemplate(w, "user_posts.html", userPosts)
-					if err != nil {
-						http.Error(w, "Error executing template", http.StatusInternalServerError)
-						return
-					}
-				}
-			}
 		}
 	default:
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+		log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
 		return
 	}
 }
