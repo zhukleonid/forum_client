@@ -27,5 +27,12 @@ func ConvertAllPosts(resp *http.Response) (model.AllPostsConvertDate, error) {
 		convertDatePosts[i].Like = posts[i].Like
 		convertDatePosts[i].Dislike = posts[i].Dislike
 	}
+	reverseSlice(convertDatePosts)
 	return convertDatePosts, nil
+}
+
+func reverseSlice(s model.AllPostsConvertDate) {
+	for i, j := 0, len(s) - 1; i < j; i, j = i + 1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
 }

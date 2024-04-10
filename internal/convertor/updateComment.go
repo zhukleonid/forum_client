@@ -2,17 +2,13 @@ package convertor
 
 import (
 	"encoding/json"
-	"fmt"
 	"lzhuk/clients/model"
 	"net/http"
 	"strconv"
 )
 
-
-
-
-
-func NewConvertUpdateComment(r *http.Request) (model.UpdateComment, error) {
+// Функция для конвертации данных для редактирования комментариев
+func ConvertUpdateComment(r *http.Request) (model.UpdateComment, error) {
 	commentId, err := strconv.Atoi(r.FormValue("commentId"))
 	if err != nil {
 		return model.UpdateComment{}, err
@@ -31,7 +27,8 @@ func NewConvertUpdateComment(r *http.Request) (model.UpdateComment, error) {
 	return updateComment, nil
 }
 
-func NewConvertUpdateCommentUser(r *http.Request) ([]byte, error) {
+// Функция для конвертации данных с изменениями в комментариях
+func ConvertUpdateCommentUser(r *http.Request) ([]byte, error) {
 	commentId, err := strconv.Atoi(r.FormValue("commentId"))
 	if err != nil {
 		return nil, err
@@ -50,41 +47,5 @@ func NewConvertUpdateCommentUser(r *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return jsonData, nil
-}
-
-func NewConvertDeleteComment(r *http.Request) ([]byte, error) {
-	commentId, err := strconv.Atoi(r.FormValue("commentId"))
-	if err != nil {
-		return nil, err
-	}
-	posttId, err := strconv.Atoi(r.FormValue("postId"))
-	if err != nil {
-		return nil, err
-	}
-
-	deleteComment := model.Comment{
-		ID:   commentId,
-		Post: posttId,
-	}
-	jsonData, err := json.Marshal(deleteComment)
-	if err != nil {
-		return nil, err
-	}
-	return jsonData, nil
-}
-
-func NewConvertLogout(r *http.Request) ([]byte, error) {
-	cookie := r.Cookies()
-	uuid := cookie[0].String()
-	fmt.Println(uuid)
-	logoutUser := model.LogoutUser{
-		UUID: uuid,
-	}
-	jsonData, err := json.Marshal(logoutUser)
-	if err != nil {
-		return nil, err
-	}
-
 	return jsonData, nil
 }

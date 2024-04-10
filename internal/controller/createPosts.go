@@ -78,7 +78,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			defer resp.Body.Close()
 			switch resp.StatusCode {
 			case http.StatusCreated:
-				http.Redirect(w, r, "http://localhost:8082/userd3/myposts", 302)
+				http.Redirect(w, r, "http://localhost:8082/userd3", 302)
 				return
 			case http.StatusInternalServerError:
 				discriptionMsg, err := convertor.DecodeErrorResponse(resp)
