@@ -168,7 +168,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 				log.Printf("Не найдено")
 				return
 			default:
-				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+				errorPage(w, errors.ErrorNotMethod, http.StatusInternalServerError)
 				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
 				return
 			}
@@ -176,7 +176,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
+		log.Printf("Не верный метод запроса при изменении данных поста")
 		return
 	}
 }
