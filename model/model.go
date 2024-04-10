@@ -40,11 +40,25 @@ type Comment struct {
 	Dislike int    `json:"dislikes"`
 }
 
-type GetPost struct {
-	Post     *Post
-	Comments []*Comment
+type CommentDate struct {
+	ID          int
+	User        int
+	Post        int
+	Description string
+	CreatedDate string
+	UpdatedDate string
+
+	Name    string
+	Like    int
+	Dislike int
 }
 
+type GetPost struct {
+	Post    *Post
+	Comment []*Comment `json:"comments"`
+}
 
-
-
+type GetPostDate struct {
+	Post    *PostDate
+	Comment []*CommentDate `json:"comments"`
+}
