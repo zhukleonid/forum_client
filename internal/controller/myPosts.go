@@ -52,7 +52,7 @@ func myPosts(w http.ResponseWriter, r *http.Request) {
 		switch resp.StatusCode {
 		case http.StatusOK:
 			// Конвертация данных о всех постах
-			userPosts, err := convertor.ConvertAllPosts(resp)
+			userPosts, err := convertor.ConvertMyPosts(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Произошла ошибка при конвертации данных обо всех постах пользователя. Ошибка: %v", err)
