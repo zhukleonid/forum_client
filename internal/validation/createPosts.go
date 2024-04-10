@@ -9,8 +9,8 @@ type FormPost struct {
 	Errors []string
 }
 
-func NewFormPost() *Form {
-	return &Form{make([]string, 0, 7)}
+func NewFormPost() *FormPost {
+	return &FormPost{make([]string, 0, 7)}
 }
 
 func (f *FormPost) Valid() bool {
@@ -28,7 +28,7 @@ func (f *FormPost) CheckField(ok bool, err string) error {
 	return nil
 }
 
-func ValidDatePost(r *http.Request) (bool, *Form) {
+func ValidDatePost(r *http.Request) (bool, *FormPost) {
 	var validDatePost bool
 	form := NewFormPost()
 	form.CheckField(form.EmptyFieldValid(r.FormValue("title")), "Пустой ввод темы!")

@@ -6,4 +6,6 @@ const (
 	EmailAlreadyExists = "Почтовый адрес уже используется для другого аккаунта"
 	InvalidCredentials = "Введены неверные учетные данные"
 	NotFoundAnyDate = "Данные не найдены"
+	EmptyDatePost = "Тема и описание не должны быть пустыми!"
+	EmptyComments = "Комментарий не должен быть пустым!"
 )

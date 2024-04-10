@@ -42,16 +42,12 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		}
 	case http.MethodPost:
 		// Проверка на валидность пользовательских данных
-		validDatePost, errValid := validation.ValidDatePost(r)
-		// Рендеринг страницы при невалидных данных создания поста пользователем
+		validDatePost, _ := validation.ValidDatePost(r)
 		if validDatePost == false {
-			w.WriteHeader(http.StatusBadRequest)
-			err = t.ExecuteTemplate(w, "create_post.html", &errValid)
-			if err != nil {
-				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при рендеринге шаблона страницы создания поста пользователем при проверке на валидность данных. Ошибка: %v", err)
-				return
-			}
+			errorPage(w, errors.EmptyDatePost, http.StatusBadRequest)
+			log.Printf("Произошла ошибка при рендеринге шаблона страницы создания поста пользователем при проверке на валидность данных. Ошибка: %v", err)
+			return
+
 		} else {
 			// Конвертация данных при создании нового поста
 			jsonData, err := convertor.ConvertCreatePost(r)
