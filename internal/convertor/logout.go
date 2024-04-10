@@ -7,7 +7,8 @@ import (
 	"net/http"
 )
 
-func NewConvertLogout(r *http.Request) ([]byte, error) {
+// Функция для конвертации данных при выходе пользователя
+func ConvertLogout(r *http.Request) ([]byte, error) {
 	cookie := r.Cookies()
 	uuid := cookie[0].String()
 	fmt.Println(uuid)

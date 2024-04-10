@@ -48,6 +48,3 @@ type GetPost struct {
 
 
 
-type LogoutUser struct {
-	UUID string
-}
