@@ -12,38 +12,6 @@ import (
 
 
 
-func NewConvertVoteComment(r *http.Request) ([]byte, error) {
-	commentId, err := strconv.Atoi(r.FormValue("commentId"))
-	if err != nil {
-		return nil, err
-	}
-	var status bool
-	switch r.FormValue("vote") {
-	case "true":
-		status = true
-	case "false":
-		status = false
-	}
-	voteComment := model.VoteComment{
-		CommentId:  commentId,
-		LikeStatus: status,
-	}
-	jsonData, err := json.Marshal(voteComment)
-	if err != nil {
-		return nil, err
-	}
-	return jsonData, nil
-}
-
-func NewConvertUserLikePosts(resp *http.Response) ([]model.Post, error) {
-	postsLikeUser := []model.Post{}
-	err := json.NewDecoder(resp.Body).Decode(&postsLikeUser)
-	if err != nil {
-		return nil, err
-	}
-	return postsLikeUser, nil
-}
-
 func NewConvertUpdateComment(r *http.Request) (model.UpdateComment, error) {
 	commentId, err := strconv.Atoi(r.FormValue("commentId"))
 	if err != nil {

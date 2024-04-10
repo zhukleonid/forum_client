@@ -51,15 +51,8 @@ type UpdateComment struct {
 	Description string `json:"description"`
 }
 
-type VotePost struct {
-	PostId     int  `json:"post_id"`
-	LikeStatus bool `json:"status"`
-}
 
-type VoteComment struct {
-	CommentId  int  `json:"comment_id"`
-	LikeStatus bool `json:"status"`
-}
+
 
 type LogoutUser struct {
 	UUID string
