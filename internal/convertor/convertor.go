@@ -8,17 +8,7 @@ import (
 	"strconv"
 )
 
-func NewConvertUpdatePost(r *http.Request) ([]byte, error) {
-	updatePost := model.Post{
-		Title:       r.FormValue("title"),
-		Description: r.FormValue("description"),
-	}
-	jsonData, err := json.Marshal(updatePost)
-	if err != nil {
-		return nil, err
-	}
-	return jsonData, nil
-}
+
 
 func NewConvertVotePost(r *http.Request) ([]byte, error) {
 	postId, err := strconv.Atoi(r.FormValue("postId"))
