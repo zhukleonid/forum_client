@@ -39,7 +39,9 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				log.Printf("Произошла ошибка при конвертации данных обо всех постах из JSON. Ошибка: %v", err)
 				return
 			}
-
+			if cahe.CategoryPosts != nil {
+				result = cahe.CategoryPosts
+			}
 			var (
 				nicname string // Хранит имя пользователя
 				cookie  bool   // Хранит наличие куки

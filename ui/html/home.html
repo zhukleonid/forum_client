@@ -68,6 +68,22 @@
             </ul>
         </nav>
     </header>
+    <form action="/userd3/category" method="GET">
+        <div>
+            <label for="category">Выберите категорию:</label>
+            <select id="category" name="category">
+                <option value="Станции">Станции</option>
+                <option value="Подвижной состав">Подвижной состав</option>
+                <option value="Расписание">Расписание</option>
+                <option value="Тарифы">Тарифы</option>
+                <option value="Строительство">Строительство</option>
+                <option value="Другое">Другое</option>
+            </select>
+            <div>
+                <button type="submit">Отправить</button>
+            </div>
+        </div>
+    </form>
     <section>
         {{if .}}
         {{range .Posts}}

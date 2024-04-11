@@ -16,4 +16,5 @@ const (
 	updateComments = "http://localhost:8083/d3/comment-update"
 	deleteComments = "http://localhost:8083/d3/comment-delete"
 	logoutUsers = "http://localhost:8083/logout"
+	categoryGet = "http://localhost:8083/d3/category"
 )

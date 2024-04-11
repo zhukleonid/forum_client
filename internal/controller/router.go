@@ -27,6 +27,7 @@ func Router(cfg config.Config) *http.Server {
 	router.HandleFunc("/userd3/updatecomment", updateComment)
 	router.HandleFunc("/userd3/deletecomment", deleteComment)
 	router.HandleFunc("/logout", logoutUser)
+	router.HandleFunc("/userd3/category", categoryPosts)
 
 	fileServer := http.FileServer(http.Dir("ui/css"))
 	router.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))
