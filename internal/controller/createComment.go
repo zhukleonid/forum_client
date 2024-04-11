@@ -18,7 +18,7 @@ func createComment(w http.ResponseWriter, r *http.Request) {
 	case len(r.Cookies()) < 1:
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
-	case !strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"):
+	case !strings.HasPrefix(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Name, "CookieUUID"):
 		fmt.Println(strings.HasPrefix(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Name, "CookieUUID"))
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
@@ -89,7 +89,7 @@ func createComment(w http.ResponseWriter, r *http.Request) {
 					log.Printf("Не найдено")
 					return
 				default:
-					errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 					log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на создание комменатрия")
 					return
 				}

@@ -88,6 +88,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			cahe.CategoryPosts = nil
+
 		case http.StatusInternalServerError:
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
