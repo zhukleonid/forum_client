@@ -58,7 +58,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 		switch resp.StatusCode {
 		case http.StatusOK:
 			// Конвертируем данные о посте из БД который пользователь будет редактировать
-			result, err := convertor.ConvertGetPosts(resp)
+			result, err := convertor.ConvertGetPosts(r, resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Произошла ошибка при конвертации данных о посте из БД который пользователь будет редактировать. Ошибка: %v", err)

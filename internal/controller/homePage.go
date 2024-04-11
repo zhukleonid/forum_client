@@ -3,6 +3,7 @@ package controller
 import (
 	"html/template"
 	"log"
+	"lzhuk/clients/internal/cahe"
 	"lzhuk/clients/internal/convertor"
 	"lzhuk/clients/internal/helpers"
 	"lzhuk/clients/pkg/config/errors"
@@ -56,7 +57,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				if helpers.CheckCookie(r.Cookies()) {
 					cookie = true
 					// Получаем по UUID имя пользователя
-					value, ok := Username[r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Value]
+					value, ok := cahe.Username[r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Value]
 					if ok {
 						nicname = value
 					} else {

@@ -45,17 +45,19 @@ type CommentDate struct {
 	User        int
 	Post        int
 	Description string
-	CreatedDate string
-	UpdatedDate string
+	CreatedDate string `json:"created_at"`
+	UpdatedDate string `json:"updated_at"`
 
 	Name    string
 	Like    int
 	Dislike int
+
+	AutorComment int
 }
 
 type GetPost struct {
 	Post    *Post
-	Comment []*Comment `json:"comments"`
+	Comments []*Comment //`json:"comments"`
 }
 
 type GetPostDate struct {

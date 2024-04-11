@@ -56,7 +56,7 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		defer resp.Body.Close()
 		switch resp.StatusCode {
 		case http.StatusOK:
-			result, err := convertor.ConvertGetPosts(resp)
+			result, err := convertor.ConvertGetPosts(r, resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Произошла ошибка при передаче запроса об получении конкретного поста. Ошибка: %v", err)

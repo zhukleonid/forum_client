@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"html/template"
 	"log"
+	"lzhuk/clients/internal/cahe"
 	"lzhuk/clients/internal/convertor"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
@@ -72,7 +73,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			// Записываем клиента в хеш-таблицу
-			Username[cookie.Value] = clientName
+			cahe.Username[cookie.Value] = clientName
 			// Записываем в ответ браузеру полученный экземпляр куки от сервера
 			http.SetCookie(w, cookie)
 			// Переход на домашнюю страницу пользователя
