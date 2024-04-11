@@ -7,6 +7,7 @@ import (
 	"log"
 	"lzhuk/clients/internal/convertor"
 	"lzhuk/clients/internal/helpers"
+	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
 	"strings"
@@ -104,79 +105,86 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodPost:
-		// Конвертируем данные с изменениями поста от пользователя для передачи на сервер
-		jsonData, err := convertor.ConvertUpdatePost(r)
-		if err != nil {
-			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при конвертации данных c изменениями внесенными пользователем о посте для передачи на сервер. Ошибка: %v", err)
+		// Проверка на валидность пользовательских данных
+		validDatePost, _ := validation.ValidDatePostUpdate(r)
+		if validDatePost == false {
+			errorPage(w, errors.EmptyDatePost, http.StatusBadRequest)
 			return
-		}
-		// Формирование URL  c конкретным id поста для редактирования
-		updatePostsId := fmt.Sprintf(updatePosts+"%s", r.FormValue("postId"))
-		// Формируем запрос на измение данных в посте
-		req, err := http.NewRequest("PUT", updatePostsId, bytes.NewBuffer(jsonData))
-		if err != nil {
-			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при подготовке запроса об изменениях данных в посте. Ошибка: %v", err)
-			return
-		}
-		// Записываем куки из браузера в запрос на сервер
-		req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
-		// Указываем формат передачи данных
-		req.Header.Set("Content-Type", "application/json")
-		// Создаем структуру нового клиента
-		client := http.Client{}
-		// Передаем запрос на сервис сервера
-		resp, err := client.Do(req)
-		if err != nil {
-			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при передаче запроса на сервис сервера об изменениях данных в посте. Ошибка: %v", err)
-			return
-		}
-		defer resp.Body.Close()
-
-		switch resp.StatusCode {
-		case http.StatusAccepted:
-			// Формируем URL запроса на сервис сервера с конкретным id поста
-			newReq, err := http.NewRequest("GET", fmt.Sprintf("http://localhost:8082/userd3/post/%s", r.FormValue("postId")), nil)
+		} else {
+			// Конвертируем данные с изменениями поста от пользователя для передачи на сервер
+			jsonData, err := convertor.ConvertUpdatePost(r)
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при конвертации данных c изменениями внесенными пользователем о посте для передачи на сервер. Ошибка: %v", err)
+				return
+			}
+			// Формирование URL  c конкретным id поста для редактирования
+			updatePostsId := fmt.Sprintf(updatePosts+"%s", r.FormValue("postId"))
+			// Формируем запрос на измение данных в посте
+			req, err := http.NewRequest("PUT", updatePostsId, bytes.NewBuffer(jsonData))
+			if err != nil {
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Произошла ошибка при подготовке запроса об изменениях данных в посте. Ошибка: %v", err)
+				return
+			}
+			// Записываем куки из браузера в запрос на сервер
+			req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
+			// Указываем формат передачи данных
+			req.Header.Set("Content-Type", "application/json")
+			// Создаем структуру нового клиента
+			client := http.Client{}
+			// Передаем запрос на сервис сервера
+			resp, err := client.Do(req)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Произошла ошибка при передаче запроса на сервис сервера об изменениях данных в посте. Ошибка: %v", err)
 				return
 			}
-			http.Redirect(w, r, newReq.URL.String(), 302)
-		case http.StatusInternalServerError:
-			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
-			if err != nil {
-				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об данных о посте который пользователь будет редактировать")
-				return
-			}
-			switch {
-			// Получена ошибка что почта уже используется
-			case discriptionMsg.Discription == "Email already exist":
-				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
-				return
-				// Получена ошибка что введены неверные учетные данные
-			case discriptionMsg.Discription == "Invalid Credentials":
-				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Не валидные данные")
-				return
-			case discriptionMsg.Discription == "Not Found Any Data":
-				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Не найдено")
-				return
+			defer resp.Body.Close()
+
+			switch resp.StatusCode {
+			case http.StatusAccepted:
+				// Формируем URL запроса на сервис сервера с конкретным id поста
+				newReq, err := http.NewRequest("GET", fmt.Sprintf("http://localhost:8082/userd3/post/%s", r.FormValue("postId")), nil)
+				if err != nil {
+					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+					log.Printf("Произошла ошибка при передаче запроса на сервис сервера об изменениях данных в посте. Ошибка: %v", err)
+					return
+				}
+				http.Redirect(w, r, newReq.URL.String(), 302)
+			case http.StatusInternalServerError:
+				discriptionMsg, err := convertor.DecodeErrorResponse(resp)
+				if err != nil {
+					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+					log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об данных о посте который пользователь будет редактировать")
+					return
+				}
+				switch {
+				// Получена ошибка что почта уже используется
+				case discriptionMsg.Discription == "Email already exist":
+					errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
+					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+					return
+					// Получена ошибка что введены неверные учетные данные
+				case discriptionMsg.Discription == "Invalid Credentials":
+					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
+					log.Printf("Не валидные данные")
+					return
+				case discriptionMsg.Discription == "Not Found Any Data":
+					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
+					log.Printf("Не найдено")
+					return
+				default:
+					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+					log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
+					return
+				}
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
 				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
 				return
-			}
-		default:
-			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о посте который пользователь собирается редактировать")
-			return
 
+			}
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
