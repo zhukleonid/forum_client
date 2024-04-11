@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/helpers"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
 )
@@ -42,6 +43,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				nicname string // Хранит имя пользователя
 				cookie  bool   // Хранит наличие куки
 			)
+			r.Cookies()
 			// Проверка на наличие куки
 			switch {
 			// Если куки не получены передаем пустое имя и отсутствие куки
@@ -51,10 +53,10 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				// При наличии куки проверяем их валидность
 			default:
 				// Проверяем что куки сгенерированы нашим сервисом сервера
-				if r.Cookies()[0].Name == "CookieUUID" {
+				if helpers.CheckCookie(r.Cookies()) {
 					cookie = true
 					// Получаем по UUID имя пользователя
-					value, ok := Username[r.Cookies()[0].Value]
+					value, ok := Username[r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Value]
 					if ok {
 						nicname = value
 					} else {
