@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/helpers"
 	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
@@ -18,7 +19,7 @@ func createComment(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
 	case !strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"):
-		fmt.Println(strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"))
+		fmt.Println(strings.HasPrefix(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Name, "CookieUUID"))
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
 	}
@@ -45,7 +46,7 @@ func createComment(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			// Запись куки из браузера в запрос для сервера
-			req.AddCookie(r.Cookies()[0])
+			req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
 			req.Header.Set("Content-Type", "application/json")
 			client := http.Client{}
 			resp, err := client.Do(req)

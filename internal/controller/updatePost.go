@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/helpers"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
 	"strings"
@@ -17,8 +18,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 	case len(r.Cookies()) < 1:
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
-	case !strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"):
-		fmt.Println(strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"))
+	case !strings.HasPrefix(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Name, "CookieUUID"):
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
 	}
@@ -43,7 +43,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Записываем куки из браузера в запрос к серверу
-		req.AddCookie(r.Cookies()[0])
+		req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
 		// Создаем структуру нового клиента
 		client := http.Client{}
 		// Передаем запрос на сервис сервера
@@ -121,7 +121,7 @@ func updatePost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Записываем куки из браузера в запрос на сервер
-		req.AddCookie(r.Cookies()[0])
+		req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
 		// Указываем формат передачи данных
 		req.Header.Set("Content-Type", "application/json")
 		// Создаем структуру нового клиента

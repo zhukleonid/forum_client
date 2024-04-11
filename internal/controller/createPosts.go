@@ -2,10 +2,10 @@ package controller
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/helpers"
 	"lzhuk/clients/internal/validation"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
@@ -18,8 +18,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	case len(r.Cookies()) < 1:
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
-	case !strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"):
-		fmt.Println(strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"))
+	case !strings.HasPrefix(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Name, "CookieUUID"):
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
 	}
@@ -64,7 +63,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			// Добавление из браузера куки в запрос на сервер
-			req.AddCookie(r.Cookies()[0])
+			req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
 			req.Header.Set("Content-Type", "application/json")
 			// Создаем структуру нового клиента
 			client := http.Client{}

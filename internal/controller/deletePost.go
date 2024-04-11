@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"lzhuk/clients/internal/convertor"
+	"lzhuk/clients/internal/helpers"
 	"lzhuk/clients/pkg/config/errors"
 	"net/http"
 	"strings"
@@ -15,8 +16,7 @@ func deletePost(w http.ResponseWriter, r *http.Request) {
 	case len(r.Cookies()) < 1:
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
-	case !strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"):
-		fmt.Println(strings.HasPrefix(r.Cookies()[0].Name, "CookieUUID"))
+	case !strings.HasPrefix(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())].Name, "CookieUUID"):
 		http.Redirect(w, r, "http://localhost:8082/login", 302)
 		return
 	}
@@ -31,7 +31,7 @@ func deletePost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Записываем куки из браузера в запрос на сервис сервера
-		req.AddCookie(r.Cookies()[0])
+		req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
 		// Создаем структуру нового клиента
 		client := http.Client{}
 		// Отправляем запрос на сервис сервера
