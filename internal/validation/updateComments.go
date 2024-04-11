@@ -31,7 +31,7 @@ func (f *FormCommentUpdate) CheckField(ok bool, err string) error {
 func ValidDateCommentUpdate(r *http.Request) (bool, *FormCommentUpdate) {
 	var validDatePost bool
 	form := NewFormCommentUpdate()
-	form.CheckField(form.EmptyFieldValid(r.FormValue("comment")), "Пустой ввод комментария!")
+	form.CheckField(form.EmptyFieldValid(r.FormValue("updatedComment")), "Пустой ввод комментария!")
 	if form.Valid() {
 		validDatePost = true
 		return validDatePost, nil

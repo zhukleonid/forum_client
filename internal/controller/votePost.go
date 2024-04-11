@@ -39,7 +39,7 @@ func votePost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Записываем куки из бразура в запрос на сервис сервера
-		req.AddCookie(r.Cookies()[0])
+		req.AddCookie(r.Cookies()[helpers.CheckCookieIndex(r.Cookies())])
 		req.Header.Set("Content-Type", "application/json")
 		// Формируем структуру нового клиента
 		client := http.Client{}

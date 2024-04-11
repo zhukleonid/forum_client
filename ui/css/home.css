@@ -1,0 +1,137 @@
+/* Добавляем стили для body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Устанавливаем минимальную высоту равную 100% высоты видимой области */
+}
+
+/* Стили для заголовка и навигации */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    top: 0; /* Фиксируем заголовок вверху страницы */
+    width: 100%;
+}
+
+nav {
+    background-color: #444;
+    color: #fff;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Добавляем стили для формы выбора категории */
+.category-section {
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1; /* Устанавливаем высокий z-index, чтобы форма была выше других элементов */
+}
+
+.category-section select {
+    margin-right: 10px; /* Добавляем отступ справа для элемента select */
+}
+
+/* Добавляем стили для списка категорий */
+#category-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 60px; /* Отступ сверху, чтобы список был ниже заголовка и формы */
+}
+
+#category-list li {
+    display: inline;
+    margin-right: 10px;
+}
+
+#category-list li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+#category-list li a:hover {
+    color: #555;
+}
+
+/* Стили для списка постов */
+.posts-list {
+    padding: 0;
+    list-style: none;
+    margin-top: 120px; /* Отступ сверху (ниже заголовка и формы выбора категории) */
+    margin-bottom: 80px; /* Отступ снизу, чтобы посты не перекрывали футер */
+    overflow-y: auto; /* Добавляем скролл, если постов слишком много */
+}
+
+/* Стили для футера */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0; /* Фиксируем футер внизу страницы */
+    width: 100%;
+}
+
+/* Добавляем отступы для постов */
+.post {
+    background-color: #ddd;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px; /* Отступы по краям */
+}
+
+/* Стили для контента поста */
+.post-content {
+    background-color: #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.post-content h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.post-content p {
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+/* Стили для информации о посте */
+.post-info {
+    background-color: #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
