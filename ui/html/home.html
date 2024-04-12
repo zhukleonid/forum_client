@@ -5,95 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моя страница</title>
     <link rel="stylesheet" href="/ui/css/home.css"> <!-- Подключаем файл со стилями -->
-    <script>
-        function toggleFontSize() {
-            var navItems = document.querySelectorAll('nav ul li, .category-section, #category-list');
-            navItems.forEach(function(item) {
-                item.classList.toggle('small-font');
-            });
-        }
-    </script>
-    <style>
-        /* Стили для маленького текста */
-        .small-font {
-            font-size: 15px !important;
-        }
-
-        /* Стили для header и footer */
-        header, footer {
-            background-color: rgb(236, 110, 38);
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Стили для кнопки меню */
-        .menu-toggle {
-            display: none; /* По умолчанию скрыта */
-            cursor: pointer;
-        }
-
-        /* Стили для навигационного меню */
-        nav {
-            display: flex;
-            justify-content: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-
-        /* Медиа-запросы для адаптивности */
-        @media only screen and (max-width: 600px) {
-            .menu-toggle {
-                display: block; /* Показываем кнопку на маленьких экранах */
-            }
-
-            nav ul {
-                display: none; /* По умолчанию скрываем навигационные ссылки на маленьких экранах */
-                flex-direction: column;
-                align-items: center;
-            }
-
-            nav ul.show {
-                display: flex; /* Показываем навигационные ссылки при активации */
-            }
-        }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var menuToggle = document.querySelector('.menu-toggle');
-            var nav = document.querySelector('nav');
-
-            menuToggle.addEventListener('click', function () {
-                nav.querySelector('ul').classList.toggle('show');
-            });
-        });
-    </script>
 </head>
 {{if .Cookie}}
 <body class="logged-in"> <!-- Добавляем класс для залогиненного пользователя -->
     <header>
         <h1>Добро пожаловать <span class="username">{{ .Username}}</span> на подфорум МЦД-3</h1>
         <nav>
-            <div class="menu-toggle" onclick="toggleFontSize()">&#9776;</div>
-            <ul>
+            <ul class="show">
                 <li><a href="/userd3">Главная</a></li>
                 <li><a href="/userd3/posts">Создать тему</a></li>
                 <li><a href="/userd3/myposts">Мои темы</a></li>
@@ -145,7 +63,6 @@
     <header>
         <h1>Добро пожаловать на подфорум МЦД-3!</h1>
         <nav>
-            <div class="menu-toggle">&#9776;</div>
             <ul>
                 <li><a href="/register">Зарегистрироваться</a></li>
                 <li><a href="/login">Войти</a></li>
@@ -156,7 +73,7 @@
         {{if .}}
         {{range .Posts}}
         <li class="post">
-            <h3>Тема</a>{{.Title}}</h3>
+            <h3>Тема: </a>{{.Title}}</h3>
             <p>{{.Description}}</p>
             <div class="post-info">
                 <p>Категория: {{.CategoryName}}</p>
