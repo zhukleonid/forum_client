@@ -1,36 +1,28 @@
-/* Добавляем стили для body */
+/* Общие стили */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f2f2f2;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Устанавливаем минимальную высоту равную 100% высоты видимой области */
 }
 
-/* Стили для заголовка и навигации */
+/* Шапка */
 header {
-    background-color: #333;
+    background-color: rgb(236, 110, 38);
     color: #fff;
     padding: 20px;
-    height: 170px;
     text-align: center;
-    position: fixed;
-    top: 0; /* Фиксируем заголовок вверху страницы */
-    width: 100%;
 }
 
+/* Навигационное меню */
 nav {
     background-color: #444;
-    color: #fff;
     padding: 10px;
 }
 
 nav ul {
     list-style-type: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
     text-align: center;
 }
 
@@ -42,97 +34,53 @@ nav ul li {
 nav ul li a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold;
 }
 
-/* Добавляем стили для формы выбора категории */
-.category-section {
-    background-color: #444;
+/* Секция с контентом */
+.section {
     padding: 20px;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    z-index: 1; /* Устанавливаем высокий z-index, чтобы форма была выше других элементов */
 }
 
-.category-section select {
-    margin-right: 10px; /* Добавляем отступ справа для элемента select */
-}
-
-/* Добавляем стили для списка категорий */
-#category-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    margin-top: 60px; /* Отступ сверху, чтобы список был ниже заголовка и формы */
-}
-
-#category-list li {
-    display: inline;
-    margin-right: 10px;
-}
-
-#category-list li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
-
-#category-list li a:hover {
-    color: #555;
-}
-
-/* Стили для списка постов */
+/* Список постов */
 .posts-list {
-    padding: 0;
     list-style: none;
-    margin-top: 210px; /* Отступ сверху (ниже заголовка и формы выбора категории) */
-    margin-bottom: 90px; /* Отступ снизу, чтобы посты не перекрывали футер */
-    overflow-y: auto; /* Добавляем скролл, если постов слишком много */
+    padding: 0;
 }
 
-/* Стили для футера */
+.posts-list li {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+.posts-list li h3 {
+    margin-top: 0;
+}
+
+/* Футер */
 footer {
-    background-color: #333;
+    background-color: rgb(236, 110, 38);
     color: #fff;
     padding: 20px;
     text-align: center;
-    position: fixed;
-    bottom: 0; /* Фиксируем футер внизу страницы */
-    width: 100%;
 }
 
-/* Добавляем отступы для постов */
-.post {
-    background-color: #ddd;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px; /* Отступы по краям */
-}
 
-/* Стили для контента поста */
-.post-content {
-    background-color: #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-}
+/* Медиа-запросы для адаптивности */
 
-.post-content h3 {
-    margin-top: 0;
-    font-size: 16px;
-}
+/* Для устройств с шириной экрана до 600px */
+@media only screen and (max-width: 600px) {
+    nav ul li {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 
-.post-content p {
-    margin: 5px 0;
-    font-size: 12px;
-}
+    .section {
+        padding: 10px;
+    }
 
-/* Стили для информации о посте */
-.post-info {
-    background-color: #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 12px;
+    .posts-list li {
+        padding: 10px;
+    }
 }

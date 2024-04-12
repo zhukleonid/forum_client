@@ -1,0 +1,84 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+/* Убираем отступ у заголовка */
+h1 {
+    margin: 0;
+    padding: 20px;
+    background-color: rgb(236, 110, 38);
+    color: #fff;
+    text-align: center;
+    width: 100%; /* Занимает всю ширину экрана */
+}
+
+/* Стили для формы */
+form {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    margin: 20px 0; /* Убираем отступы по бокам, оставляем отступ сверху и снизу */
+    border-radius: 10px;
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+}
+
+select, input[type="text"] {
+    width: calc(100% - 20px); /* Занимает всю ширину формы с учетом отступов */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+textarea {
+    width: calc(100% - 20px); /* Занимает всю ширину формы с учетом отступов */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    height: 200px; /* Фиксированная высота */
+    resize: none; /* Предотвращаем изменение размеров мышью */
+}
+
+button[type="submit"] {
+    background-color: rgb(236, 110, 38);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(255, 152, 74);
+}
+
+h3 {
+    color: red;
+}
+
+/* Стили для футера */
+footer {
+    background-color: rgb(236, 110, 38);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%; /* Занимает всю ширину экрана */
+    margin: 0; /* Убираем отступы */
+}

@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.815);
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -84,7 +84,7 @@ section {
 }
 
 .square.D3 button {
-    background-color: #FFDAB9; /* Папайя */
+    background-color: rgb(236, 110, 38); /* Папайя */
 }
 
 .square.D4 button {
@@ -92,7 +92,7 @@ section {
 }
 
 footer {
-    background-color: #333;
+    background-color: rgb(0, 0, 0);
     color: #fff;
     padding: 20px;
     text-align: center;

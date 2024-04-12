@@ -76,7 +76,7 @@ form:last-of-type h4 {
 
 /* Стили для заголовка */
 header {
-    background-color: #333;
+    background-color: rgb(236, 110, 38);
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -84,7 +84,7 @@ header {
 
 /* Стили для футера */
 footer {
-    background-color: #333;
+    background-color: rgb(236, 110, 38);
     color: #fff;
     padding: 20px;
     text-align: center;
