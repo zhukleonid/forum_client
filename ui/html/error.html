@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
+    <link rel="stylesheet" href="/ui/css/error.css">
 </head>
 <body>
-    <h1>Твой диаметр</h1>
-    <li><a href="/userd3">Главная</a></li>
+    <h1>Подфорум МЦД-3</h1>
     <main class="main">
         <div class="main_content">
             <div>
                 <h2 class="main_error">{{.StatusText}}</h2>
-                <h2 class="main_error">{{.StatusCode}}</h2>
+            </div>
+            <div class="button_container"> <!-- Добавляем контейнер для кнопки -->
+                <li><a class="button" href="/userd3">Вернуться</a></li>
             </div>
         </div>
     </main>
     <footer>
-        <p>© 2024 | Твой диаметр</p>
+        <p>© 2024 | Твои магистрали</p>
     </footer>
 </body>
 </html>

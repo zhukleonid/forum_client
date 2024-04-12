@@ -14,6 +14,7 @@ header {
     background-color: #333;
     color: #fff;
     padding: 20px;
+    height: 170px;
     text-align: center;
     position: fixed;
     top: 0; /* Фиксируем заголовок вверху страницы */
@@ -46,7 +47,7 @@ nav ul li a {
 
 /* Добавляем стили для формы выбора категории */
 .category-section {
-    background-color: #fff;
+    background-color: #444;
     padding: 20px;
     text-align: center;
     position: fixed;
@@ -85,8 +86,8 @@ nav ul li a {
 .posts-list {
     padding: 0;
     list-style: none;
-    margin-top: 120px; /* Отступ сверху (ниже заголовка и формы выбора категории) */
-    margin-bottom: 80px; /* Отступ снизу, чтобы посты не перекрывали футер */
+    margin-top: 210px; /* Отступ сверху (ниже заголовка и формы выбора категории) */
+    margin-bottom: 90px; /* Отступ снизу, чтобы посты не перекрывали футер */
     overflow-y: auto; /* Добавляем скролл, если постов слишком много */
 }
 

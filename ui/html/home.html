@@ -19,7 +19,6 @@
                 <li><a href="/logout">Выйти</a></li>
             </ul>
         </nav>
-    </header>
     <!-- Форма для выбора категории -->
     <form action="/userd3/category" method="GET">
         <div class="category-section">
@@ -35,15 +34,7 @@
             <button type="submit">Отправить</button>
         </div>
     </form>
-    <!-- Список категорий -->
-    <ul id="category-list">
-        <li><a href="#">Станции</a></li>
-        <li><a href="#">Поезда</a></li>
-        <li><a href="#">Расписание</a></li>
-        <li><a href="#">Тарифы</a></li>
-        <li><a href="#">Строительство</a></li>
-        <li><a href="#">Другое</a></li>
-    </ul>
+</header>
     <!-- Список постов -->
     <ul class="posts-list"> <!-- Используем список для постов -->
         {{if .}}

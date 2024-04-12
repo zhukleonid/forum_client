@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
+    <link rel="stylesheet" href="/ui/css/register.css"> <!-- Подключаем новый файл со стилями -->
 </head>
 <body>
-    <h1>Регистрация пользователя</h1>
+    <header> <!-- Новый тег для заголовка -->
+        <h1>Регистрация пользователя</h1>
+    </header>
     {{ if . }}
     <form action="/register" method="post">
         <label for="name">Имя:</label>
@@ -48,7 +51,7 @@
     </form>
     {{ end }}
     <footer>
-        <p>© 2024 | Твой диаметр</p>
+        <p>© 2024 | Твои магистрали</p>
     </footer>
 </body>
 </html>
