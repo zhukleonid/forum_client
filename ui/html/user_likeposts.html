@@ -4,37 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Понравившиеся</title>
-    <link rel="stylesheet" href="/ui/css/createpost.css">
+    <link rel="stylesheet" href="/ui/css/likeposts.css">
 </head>
 <body>
     <header>
-        <h1>МЦД-3 | Твой диаметр</h1>
-        <ul>
-            <li><a href="/userd3">Главная</a></li>
-            <li><a href="/userd3/posts">Создать пост</a></li>
-            <li><a href="/userd3/myposts">Мои посты</a></li>
-            <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
-            <li><a href="/liked-posts">Выйти</a></li>
-        </ul>
+        <h1>Мне нравится</h1>
+        <nav>
+            <ul>
+                <li><a href="/userd3">Главная</a></li>
+                <li><a href="/userd3/posts">Создать тему</a></li>
+                <li><a href="/userd3/myposts">Мои темы</a></li>
+                <li><a href="/logout">Выйти</a></li>
+            </ul>
+        </nav>
     </header>
     <section>
+        <ul class="posts-list">
         {{if .}}
             {{range .}}
-                <div class="post">
-                    <h3>Тема: <a href="/userd3/post/{{.PostId}}">{{.Title}}</a></h3>
-                    <p>Описание темы: {{.Description}}</p>
-                    <p>Категория: {{.CategoryName}}</p>
-                    <p>Дата создания: {{.CreateDate}}</p>
-                    <p>Автор: {{.Author}}</p>
-                    <p>Нравится: {{.Like}} | Не нравится: {{.Dislike}}</p>
-                </div>
+            <li class="post">
+                    <a href="/userd3/post/{{.PostId}}" class="post post-link">
+                    <h3>Тема: {{.Title}}</h3>
+                    <div class="description-container">
+                        <pre>{{.Description}}</pre>
+                    </div>
+                    
+                    <div class="post-info">
+                        <p>Категория: {{.CategoryName}}</p>
+                        <p>Дата создания: {{.CreateDate}}</p>
+                        <p>Автор: {{.Author}}</p>
+                    </div>
+                </a>
+                <p>Нравится <span class="like-count">{{.Like}}</span> Не нравится <span class="dislike-count">{{.Dislike}}</span></p>
+            </li>
             {{end}}
         {{else}}
-            <p>Нет доступных постов</p>
+            <p>Нет понравившихся постов</p>
         {{end}}
+    </ul>
     </section>
     <footer>
-        <p>© 2024 | Твой диаметр</p>
+        <p>© 2024 | Твои магистрали</p>
     </footer>
 </body>
 </html>

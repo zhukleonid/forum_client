@@ -65,6 +65,11 @@ section {
     transition: all 0.3s ease; /* Плавное изменение при наведении */
 }
 
+.description-container {
+    max-width: 100%;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+}
+
 .post:hover {
     transform: translateY(-5px); /* Небольшое поднятие при наведении */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Увеличение тени при наведении */
@@ -144,6 +149,7 @@ section {
 .vote-buttons input[type="submit"]:hover {
     background-color: #d00;
 }
+
 
 /* Футер */
 footer {

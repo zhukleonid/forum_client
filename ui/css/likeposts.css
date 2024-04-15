@@ -3,25 +3,23 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f2f2f2;
-    text-align: center;
 }
 
 /* Стили для header и footer */
-header {
+header, footer {
     background-color: rgb(236, 110, 38);
     color: #fff;
     text-align: center;
     padding: 20px;
-    position: relative; /* Добавляем относительное позиционирование для header */
+    position: relative;
 }
 
-/* Навигационное меню в сером прямоугольнике */
+/* Навигационное меню */
 nav {
-    background-color: #ddd; /* Серый цвет фона */
+    background-color: #ddd;
     padding: 10px;
-    margin-bottom: 20px; /* Отступ снизу */
-    border-radius: 10px; /* Закругление углов */
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
 nav ul {
@@ -37,88 +35,121 @@ nav ul li {
 }
 
 nav ul li:last-child {
-    margin-right: 0; /* Убираем правый отступ у последнего элемента */
+    margin-right: 0;
 }
 
 nav ul li a {
-    color: #333; /* Цвет текста */
+    color: #333;
     text-decoration: none;
-    padding: 8px 16px; /* Поля внутри элемента */
-    border-radius: 5px; /* Закругление углов кнопок */
+    padding: 8px 16px;
+    border-radius: 5px;
 }
 
 nav ul li a:hover {
-    background-color: #bbb; /* Серый цвет фона при наведении */
+    background-color: #bbb;
 }
 
-
-/* Убираем отступ у заголовка */
-h1 {
-    margin: 0;
-    padding: 20px;
-    background-color: rgb(236, 110, 38);
-    color: #fff;
-    text-align: center;
-    width: 100%; /* Занимает всю ширину экрана */
+/* Секция с контентом */
+.section {
+    padding: 30px;
 }
 
-/* Стили для формы */
-form {
-    background-color: rgb(255, 255, 255);
-    padding: 20px;
-    margin: 20px 0; /* Убираем отступы по бокам, оставляем отступ сверху и снизу */
-    border-radius: 10px;
+.category-section {
+    margin-bottom: 20px;
 }
 
-form div {
+.category-section label {
+    display: block;
     margin-bottom: 10px;
 }
 
-label {
-    font-weight: bold;
-}
-
-select, input[type="text"] {
-    width: calc(100% - 20px); /* Занимает всю ширину формы с учетом отступов */
+.category-section select {
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 16px;
 }
 
-textarea {
-    width: calc(100% - 20px); /* Занимает всю ширину формы с учетом отступов */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 16px;
-    height: 200px; /* Фиксированная высота */
-    resize: none; /* Предотвращаем изменение размеров мышью */
-}
-
-button[type="submit"] {
-    background-color: rgb(236, 110, 38);
+.category-section button {
+    background-color: rgb(240, 13, 13);
     color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px; /* Отступ сверху */
-    margin-left: 10px; /* Небольшой отступ слева */
+    margin-top: 10px;
 }
 
-button[type="submit"]:hover {
-    background-color: rgb(255, 152, 74);
+.category-section button:hover {
+    background-color: #d00;
 }
 
-h3 {
+/* Список постов */
+.posts-list {
+    list-style: none;
+    padding: 20px;
+    margin-bottom: calc(20px + 70px);
+}
+
+.posts-list li {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.posts-list li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.posts-list li h3 {
+    margin-top: 0;
+    color: rgb(236, 110, 38);
+}
+
+.post-info {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.post-info p {
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.post-info .basic-info p {
+    font-size: 14px;
+}
+
+.post-info .reactions p {
+    margin-bottom: 0;
+}
+
+/* Стили для цифр Нравится и Не нравится */
+.post-info .reactions p .like-count {
+    color: green;
+}
+
+.post-info .reactions p .dislike-count {
     color: red;
 }
 
-/* Стили для футера */
+.post-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.description-container {
+    max-width: 100%;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+}
+
+
+/* Футер */
 footer {
     background-color: rgb(236, 110, 38);
     color: #fff;
@@ -126,6 +157,46 @@ footer {
     text-align: center;
     position: fixed;
     bottom: 0;
-    width: 100%; /* Занимает всю ширину экрана */
-    margin: 0; /* Убираем отступы */
+    left: 0;
+    width: 100%;
+}
+
+/* Стили для маленького текста */
+.small-font {
+    font-size: 15px !important;
+}
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 600px) {
+    header h1 {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    nav {
+        padding: 5px;
+        background-color: transparent;
+    }
+
+    nav ul {
+        background-color: rgb(240, 13, 13);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        height: 60px;
+        width: 100%;
+        padding: 10px;
+        z-index: 1;
+    }
+
+    nav ul li {
+        font-size: 15px;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
 }

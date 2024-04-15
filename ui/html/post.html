@@ -23,7 +23,9 @@
         {{with .Post}}
         <div class="post">
             <h3>{{.Title}}</h3>
-            <p>{{.Description}}</p>
+            <div class="description-container">
+                <pre>{{.Description}}</pre>
+            </div>            
             <p>Категория: {{.CategoryName}}</p>
             <p>Автор: {{.Author}}</p>
             <p>Дата создания: {{.CreateDate}}</p>
@@ -48,7 +50,9 @@
             {{range .Comment}}
             <a name="comment-{{.ID}}"></a>
             <div class="comment">
-                <p>{{.Description}}</p>
+                <div class="description-container">
+                    <pre>{{.Description}}</pre>
+                </div>                
                 <p>Автор: {{.Name}}</p>
                 <p>Дата создания: {{.CreatedDate}}</p>
                 <div class="vote-buttons">

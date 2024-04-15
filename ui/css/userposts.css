@@ -138,6 +138,12 @@ nav ul li a:hover {
     margin-bottom: 0;
 }
 
+.description-container {
+    max-width: 100%;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+}
+
+
 /* Футер */
 footer {
     background-color: rgb(236, 110, 38);

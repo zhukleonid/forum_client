@@ -22,7 +22,7 @@
         <!-- Форма для выбора категории -->
         <form action="/userd3/category" method="GET">
             <div class="category-section">
-                <label for="category">Выберите категорию:</label>
+                <label for="category">Выберите категорию обсуждения:</label>
                 <select id="category" name="category">
                     <option value="Станции">Станции</option>
                     <option value="Поезда">Поезда</option>
@@ -42,14 +42,17 @@
         <li class="post">
             <a href="/userd3/post/{{.PostID}}" class="post post-link">
                 <h3>Тема: {{.Title}}</h3>
-                <p>{{.Description}}</p>
+                <div class="description-container">
+                    <pre>{{.Description}}</pre>
+                </div>
+                
                 <div class="post-info">
                     <p>Категория: {{.CategoryName}}</p>
                     <p>Автор: {{.Author}}</p>
                     <p>Дата создания: {{.CreatedAt}}</p>
                 </div>
-                <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
-            </a>            
+            </a>
+            <p>Нравится <span class="like-count">{{.Like}}</span> Не нравится <span class="dislike-count">{{.Dislike}}</span></p>
         </li>
         {{end}}
         {{else}}
@@ -76,13 +79,17 @@
         {{range .Posts}}
         <li class="post">
             <h3>Тема: </a>{{.Title}}</h3>
-            <p>{{.Description}}</p>
+            <div class="description-container">
+                <pre>{{.Description}}</pre>
+            </div>
+            
             <div class="post-info">
                 <p>Категория: {{.CategoryName}}</p>
                 <p>Автор: {{.Author}}</p>
                 <p>Дата создания: {{.CreatedAt}}</p>
-                <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
             </div>
+        </a>
+        <p>Нравится <span class="like-count">{{.Like}}</span> Не нравится <span class="dislike-count">{{.Dislike}}</span></p>
         </li>
         {{end}}
         {{else}}

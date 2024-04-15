@@ -24,9 +24,11 @@
         {{if .}}
         {{range .}}
         <li class="post">
-            <a href="/userd3/post/{{.PostID}}" class="post post-link">
+            <a href="/userd3/updatepost/{{.PostID}}" class="post post-link">
             <h3>Тема: {{.Title}}</h3>
-            <p>{{.Description}}</p>
+            <div class="description-container">
+                <pre>{{.Description}}</pre>
+            </div>
                 <div class="post-info">
                  <p>Категория: {{.CategoryName}}</p>
                  <p>Дата создания: {{.CreatedAt}}</p>

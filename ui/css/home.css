@@ -68,7 +68,6 @@ nav ul li a:hover {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
- 
 }
 
 .category-section button {
@@ -79,7 +78,6 @@ nav ul li a:hover {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    margin-bottom: 10px;
     margin-left: 20px;
     margin-right: 20px;
 }
@@ -87,7 +85,6 @@ nav ul li a:hover {
 .category-section button:hover {
     background-color: #d00;
 }
-
 
 /* Список постов */
 .posts-list {
@@ -116,12 +113,6 @@ nav ul li a:hover {
     color: rgb(236, 110, 38); /* Цвет заголовка поста */
 }
 
-.post-link {
-    text-decoration: none;
-    color: inherit; /* Использовать цвет текста родительского элемента */
-}
-
-
 .post-info {
     display: flex;
     flex-wrap: wrap;
@@ -138,6 +129,24 @@ nav ul li a:hover {
 
 .post-info .reactions p {
     margin-bottom: 0;
+}
+/* Стили для цифр Нравится и Не нравится */
+.posts-list .post .post-info p .like-count {
+    color: green !important; /* Зеленый цвет для Нравится */
+}
+
+.posts-list .post .post-info p .dislike-count {
+    color: red !important; /* Красный цвет для Не нравится */
+}
+
+
+.post-link {
+    text-decoration: none;
+    color: inherit; /* Использовать цвет текста родительского элемента */
+}
+.description-container {
+    max-width: 100%;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
 }
 
 /* Футер */
@@ -195,4 +204,3 @@ footer {
         display: flex;
     }
 }
-
