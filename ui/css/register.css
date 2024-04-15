@@ -92,3 +92,26 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 600px) {
+    form {
+        max-width: 300px; /* Уменьшаем ширину формы для мобильных устройств */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: calc(100% - 12px); /* Учитываем внутренние отступы */
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+
+    button[type="submit"] {
+        padding: 10px;
+        font-size: 16px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+}

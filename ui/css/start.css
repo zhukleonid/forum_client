@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: rgba(0, 0, 0, 0.815);
+    background-color: #ccc;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -76,11 +76,11 @@ section {
 }
 
 .square.D1 button {
-    background-color: #FF4500; /* Физалис */
+    background-color:  #ccc; /* Физалис */
 }
 
 .square.D2 button {
-    background-color: #FF00FF; /* Фуксия */
+    background-color:  #ccc; /* Фуксия */
 }
 
 .square.D3 button {
@@ -88,11 +88,11 @@ section {
 }
 
 .square.D4 button {
-    background-color: #00FF7F; /* Ментол */
+    background-color:  #ccc; /* Ментол */
 }
 
 footer {
-    background-color: rgb(0, 0, 0);
+    background-color: #ccc;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -100,4 +100,21 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
+}
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 600px) {
+    nav ul li {
+        display: block; /* Изменяем отображение элементов меню на блочное для мобильных устройств */
+        margin-right: 0; /* Убираем правый отступ */
+        margin-bottom: 10px; /* Добавляем нижний отступ между элементами */
+    }
+
+    .square {
+        width: calc(50% - 40px); /* Уменьшаем ширину квадратов для мобильных устройств */
+        height: 100px; /* Уменьшаем высоту квадратов для мобильных устройств */
+        margin: 10px; /* Уменьшаем отступы между квадратами для мобильных устройств */
+        line-height: 100px; /* Устанавливаем высоту текста по центру квадрата */
+        font-size: 18px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
 }

@@ -64,3 +64,27 @@ footer {
     left: 0;
     width: 100%;
 }
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 600px) {
+    form {
+        max-width: 300px; /* Уменьшаем ширину формы для мобильных устройств */
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        width: calc(100% - 22px); /* Учитываем внутренние отступы */
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 14px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+
+    button[type="submit"] {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+}

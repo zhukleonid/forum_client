@@ -4,49 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма для изменения комментария</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-        form {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 500px;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="/ui/css/updatecomment.css">
 </head>
 <body>
+    <header>
+        <h1>Изменение темы</h1>
+        <nav>
+            <ul>
+                <li><a href="/userd3">Главная</a></li>
+                <li><a href="/userd3/posts">Создать пост</a></li>
+                <li><a href="/userd3/myposts">Мои посты</a></li>
+                <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
+                <li><a href="/liked-posts">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
     <form action="/userd3/updatecomment" method="POST">
         <textarea name="updatedComment" rows="4" required>{{.Description}}</textarea><br>
         <input type="hidden" name="commentId" value="{{.ID}}">
         <input type="hidden" name="postId" value="{{.Post}}">
         <input type="submit" value="Отправить">
     </form>
+    <footer>
+        <p>© 2024 | Твои магистрали</p>
+    </footer>
 </body>
 </html>

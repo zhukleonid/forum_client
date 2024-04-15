@@ -161,42 +161,33 @@ footer {
 }
 
 /* Медиа-запросы для адаптивности */
-/* Для устройств с шириной экрана до 600px */
 @media only screen and (max-width: 600px) {
+    /* Уменьшаем размер текста в заголовке */
 
     header h1 {
-        font-size: 20px; /* Уменьшаем размер текста в заголовке */
-        margin-top: 10px; /* Добавляем вертикальный отступ для текста */
+        font-size: 20px;
+        padding: 10px;
     }
 
     nav {
-        
-        padding: 5px;
-        background-color: transparent; /* Убираем фон навигационного меню на мобильных устройствах */
+        background-color: #ddd; /* Серый цвет фона */
+        margin-bottom: 10px; /* Отступ снизу */
+        border-radius: 10px; /* Закругление углов */
     }
 
+    /* Стили для списка элементов меню */
     nav ul {
-        background-color: rgb(240, 13, 13);
+        background-color: #ddd;
         display: flex;
         align-items: center;
-        justify-content: center;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        height: 60px;
+        height: 70px;
         width: 100%;
-        padding: 10px;
-        z-index: 1;
+        overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+        white-space: nowrap;
     }
-    
-    
+
     nav ul li {
-        font-size: 15px; /* Устанавливаем размер текста */
-    }
-    
-    
-    nav ul.show {
-        display: flex;
+        display: inline-block;
+        justify-content: left;
     }
 }
-
