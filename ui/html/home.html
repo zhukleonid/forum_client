@@ -40,14 +40,16 @@
         {{if .}}
         {{range .Posts}}
         <li class="post">
-            <h3>Тема: <a href="/userd3/post/{{.PostID}}">{{.Title}}</a></h3>
-            <p>{{.Description}}</p>
-            <div class="post-info">
-                <p>Категория: {{.CategoryName}}</p>
-                <p>Автор: {{.Author}}</p>
-                <p>Дата создания: {{.CreatedAt}}</p>
+            <a href="/userd3/post/{{.PostID}}" class="post post-link">
+                <h3>Тема: {{.Title}}</h3>
+                <p>{{.Description}}</p>
+                <div class="post-info">
+                    <p>Категория: {{.CategoryName}}</p>
+                    <p>Автор: {{.Author}}</p>
+                    <p>Дата создания: {{.CreatedAt}}</p>
+                </div>
                 <p>Нравится {{.Like}} Не нравится {{.Dislike}}</p>
-            </div>
+            </a>            
         </li>
         {{end}}
         {{else}}

@@ -50,53 +50,12 @@ nav ul li a:hover {
 }
 
 /* Секция с контентом */
-.section {
+section {
     padding: 30px;
 }
 
-.category-section {
-    margin-bottom: 20px;
-}
-
-.category-section label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.category-section select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
- 
-}
-
-.category-section button {
-    background-color: rgb(240, 13, 13);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-.category-section button:hover {
-    background-color: #d00;
-}
-
-
-/* Список постов */
-.posts-list {
-    list-style: none;
-    padding: 20px;
-    margin-bottom: calc(20px + 70px); /* Высота футера + отступ */
-}
-
-.posts-list li {
+/* Стили для постов */
+.post {
     margin-bottom: 20px;
     border: 1px solid #ddd;
     padding: 20px;
@@ -106,38 +65,84 @@ nav ul li a:hover {
     transition: all 0.3s ease; /* Плавное изменение при наведении */
 }
 
-.posts-list li:hover {
+.post:hover {
     transform: translateY(-5px); /* Небольшое поднятие при наведении */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Увеличение тени при наведении */
 }
 
-.posts-list li h3 {
+.post h3 {
     margin-top: 0;
     color: rgb(236, 110, 38); /* Цвет заголовка поста */
 }
 
-.post-link {
-    text-decoration: none;
-    color: inherit; /* Использовать цвет текста родительского элемента */
+/* Стили для комментариев */
+.comment {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9; /* Цвет фона комментария */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для комментария */
+    border-radius: 8px; /* Закругление углов комментария */
+    transition: all 0.3s ease; /* Плавное изменение при наведении */
+}
+
+.comment:hover {
+    transform: translateY(-5px); /* Небольшое поднятие при наведении */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Увеличение тени при наведении */
+}
+.comment-form textarea {
+    resize: none; /* Запрет на изменение размеров */
+    width: 100%; /* Ширина равна 100% от родительского контейнера */
+    padding: 10px; /* Поля вокруг текста */
+    border: 1px solid #ddd; /* Рамка */
+    border-radius: 5px; /* Закругление углов */
+    box-sizing: border-box; /* Учитываем границы и поля в общей ширине */
+    transition: border-color 0.3s ease; /* Плавная анимация при изменении цвета рамки */
+}
+
+.comment-form textarea:focus {
+    border-color: rgb(236, 110, 38); /* Изменение цвета рамки при фокусе */
+}
+
+.comment-form input[type="submit"] {
+    margin-top: 10px; /* Отступ сверху от поля ввода */
+    margin-left: 5px; /* Небольшой отступ слева */
+    background-color: rgb(236, 110, 38);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comment-form input[type="submit"]:hover {
+    background-color: #d00;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
-.post-info {
-    display: flex;
-    flex-wrap: wrap;
+/* Стили для кнопок голосования */
+.vote-buttons {
+    margin-top: 10px;
 }
 
-.post-info p {
-    margin-right: 20px;
-    margin-bottom: 10px;
+.vote-buttons form {
+    display: inline-block;
+    margin-right: 10px;
 }
 
-.post-info .basic-info p {
-    font-size: 14px;
+.vote-buttons input[type="submit"] {
+    background-color: rgb(240, 13, 13);
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.post-info .reactions p {
-    margin-bottom: 0;
+.vote-buttons input[type="submit"]:hover {
+    background-color: #d00;
 }
 
 /* Футер */
@@ -166,7 +171,6 @@ footer {
     }
 
     nav {
-        
         padding: 5px;
         background-color: transparent; /* Убираем фон навигационного меню на мобильных устройствах */
     }
@@ -184,13 +188,11 @@ footer {
         padding: 10px;
         z-index: 1;
     }
-    
-    
+
     nav ul li {
         font-size: 15px; /* Устанавливаем размер текста */
     }
-    
-    
+
     nav ul.show {
         display: flex;
     }

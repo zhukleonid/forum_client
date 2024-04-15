@@ -3,81 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мои посты</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-        header h1 a {
-            color: #fff;
-            text-decoration: none;
-        }
-        header ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-        }
-        header ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-        header ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-        section {
-            padding: 20px;
-        }
-        .post {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-    </style>
+    <title>Мои темы</title>
+    <link rel="stylesheet" href="/ui/css/userposts.css">
 </head>
 <body>
     <header>
-        <h1>МЦД-3 | Твой диаметр</h1>
-        <ul>
-            <li><a href="/userd3">Главная</a></li>
-            <li><a href="/userd3/posts">Создать пост</a></li>
-            <li><a href="/userd3/myposts">Мои посты</a></li>
-            <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
-            <li><a href="/liked-posts">Выйти</a></li>
-        </ul>
+        <h1>Мои созданные темы</h1>
+        <nav>
+            <ul class="show">
+                <li><a href="/userd3">Главная</a></li>
+                <li><a href="/userd3/posts">Создать тему</a></li>
+                <li><a href="/userd3/myposts">Мои темы</a></li>
+                <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
+                <li><a href="/logout">Выйти</a></li>
+            </ul>
+        </nav>
     </header>
     <section>
+        <ul class="posts-list">
         {{if .}}
         {{range .}}
-        <div class="post">
-            <h3>Тема: <a href="/userd3/updatepost/{{.PostID}}">{{.Title}}</a></h3>
-            <p>Описание темы: {{.Description}}</p>
-            <p>Категория: {{.CategoryName}}</p>
-            <p>Дата создания: {{.CreatedAt}}</p>
-        </div>
+        <li class="post">
+            <a href="/userd3/post/{{.PostID}}" class="post post-link">
+            <h3>Тема: {{.Title}}</h3>
+            <p>{{.Description}}</p>
+                <div class="post-info">
+                 <p>Категория: {{.CategoryName}}</p>
+                 <p>Дата создания: {{.CreatedAt}}</p>
+                 </div>
+            </a> 
+        </li>
         {{end}}
         {{else}}
-        <p>Вы еще не создали ни одной темы</p>
+        <li>Вы еще не создали ни одной темы</li>
         {{end}}
+    </ul>
     </section>
     <footer>
-        <p>© 2024 | Твой диаметр</p>
+        <p>© 2024 | Твои магистрали</p>
     </footer>
 </body>
 </html>

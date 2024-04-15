@@ -7,7 +7,17 @@
     <link rel="stylesheet" href="/ui/css/createpost.css">
 </head>
 <body>
-    <h1>Создать новую тему | МЦД-3</h1>
+    <header>
+        <h1>Создать новую тему</h1>
+        <nav>
+            <ul>
+                <li><a href="/userd3">Главная</a></li>
+                <li><a href="/userd3/myposts">Мои темы</a></li>
+                <li><a href="/userd3/likeposts">Понравившиеся темы</a></li>
+                <li><a href="/liked-posts">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
     <form action="/userd3/posts" method="POST">
         <div>
             <label for="category">Выберите категорию:</label>
@@ -35,8 +45,9 @@
         <h3><strong>{{.}}</strong></h3>
         {{ end }}
     </form>
-</body>
 <footer>
     <p>© 2024 | Твои магистрали</p>
 </footer>
+</body>
 </html>
+

@@ -68,7 +68,6 @@ nav ul li a:hover {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
- 
 }
 
 .category-section button {
@@ -115,7 +114,6 @@ nav ul li a:hover {
     margin-top: 0;
     color: rgb(236, 110, 38); /* Цвет заголовка поста */
 }
-
 .post-link {
     text-decoration: none;
     color: inherit; /* Использовать цвет текста родительского элемента */
