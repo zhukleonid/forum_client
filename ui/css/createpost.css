@@ -7,7 +7,7 @@ body {
 }
 
 /* Стили для header и footer */
-header, footer {
+header {
     background-color: rgb(236, 110, 38);
     color: #fff;
     text-align: center;
@@ -107,7 +107,7 @@ h3 {
     color: red;
 }
 
-/* Стили для футера */
+/* Футер */
 footer {
     background-color: rgb(236, 110, 38);
     color: #fff;
@@ -115,10 +115,14 @@ footer {
     text-align: center;
     position: fixed;
     bottom: 0;
-    width: 100%; /* Занимает всю ширину экрана */
-    margin: 0; /* Убираем отступы */
+    left: 0;
+    width: 100%;
 }
 
+section {
+    padding: 30px;
+    margin-bottom: 100px
+}
 /* Медиа-запросы для адаптивности */
 @media only screen and (max-width: 600px) {
     /* Уменьшаем размер текста в заголовке */

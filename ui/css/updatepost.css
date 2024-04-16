@@ -118,6 +118,43 @@ footer {
     text-align: center;
     position: fixed;
     bottom: 0;
-    width: 100%; /* Занимает всю ширину экрана */
-    margin: 0; /* Убираем отступы */
+    left: 0;
+    width: 100%;
+}
+
+section {
+    padding: 30px;
+    margin-bottom: 100px
+}
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 600px) {
+    /* Уменьшаем размер текста в заголовке */
+
+    header h1 {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    nav {
+        background-color: #ddd; /* Серый цвет фона */
+        margin-bottom: 10px; /* Отступ снизу */
+        border-radius: 10px; /* Закругление углов */
+    }
+
+    /* Стили для списка элементов меню */
+    nav ul {
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        height: 70px;
+        width: 100%;
+        overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+        white-space: nowrap;
+    }
+
+    nav ul li {
+        display: inline-block;
+        justify-content: left;
+    }
 }
