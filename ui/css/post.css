@@ -142,7 +142,7 @@ section {
 
 /* Стили для кнопок голосования */
 .vote-buttons {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .vote-buttons form {
@@ -218,6 +218,7 @@ section {
 .vote-buttons form {
     display: inline-block;
     margin-right: 10px;
+    margin-top: 10px;
 }
 
 .vote-buttons input[type="submit"] {
