@@ -4,10 +4,22 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    position: relative; /* Устанавливаем положение body в относительное */
+    min-height: 100vh; /* Задаем минимальную высоту body, чтобы занимал всю высоту видимой области */
+}
+
+footer {
+    background-color: rgb(236, 110, 38);
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    position: absolute; /* Абсолютное позиционирование футера */
+    width: 100%; /* Растягиваем футер на всю ширину */
+    bottom: 0; /* Прижимаем футер к нижней части родительского элемента (body) */
 }
 
 /* Стили для header и footer */
-header, footer {
+header {
     background-color: rgb(236, 110, 38);
     color: #fff;
     text-align: center;
@@ -196,9 +208,5 @@ section {
     nav ul li {
         display: inline-block;
         justify-content: left;
-    }
-
-    footer {
-        position: static; /* Изменяем позиционирование на статическое */
     }
 }

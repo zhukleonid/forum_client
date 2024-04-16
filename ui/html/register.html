@@ -26,7 +26,6 @@
         <h3><strong>{{.}}</strong></h3>
         {{ end }}
     {{ else }}
-    </form>
     <form action="/register" method="post">
         <label for="name">Имя:</label>
         <input type="text" id="name" name="name" required><br>
@@ -48,6 +47,12 @@
             <h4> - имееть длину не менее 8 символов</h4>
 
         <button type="submit">Зарегистрироваться</button>
+    </form>
+    <form>
+        <h4>Зарегистрироваться с помощью:</h4>
+            <button action="/register" method="post" type="submit">Google</button>
+            <button action="/register" method="post" type="submit">GitHub</button>
+        </form>
     </form>
     {{ end }}
     <footer>
