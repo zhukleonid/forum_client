@@ -1,5 +1,3 @@
-/* styles.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,16 +6,17 @@ body {
     min-height: 100vh; /* Задаем минимальную высоту body, чтобы занимал всю высоту видимой области */
 }
 
+/* Футер */
 footer {
     background-color: rgb(236, 110, 38);
     color: #fff;
-    text-align: center;
     padding: 20px;
-    position: absolute; /* Абсолютное позиционирование футера */
-    width: 100%; /* Растягиваем футер на всю ширину */
-    bottom: 0; /* Прижимаем футер к нижней части родительского элемента (body) */
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
-
 /* Стили для header и footer */
 header {
     background-color: rgb(236, 110, 38);
@@ -62,10 +61,11 @@ nav ul li a:hover {
     background-color: #bbb; /* Серый цвет фона при наведении */
 }
 
-/* Секция с контентом */
 section {
     padding: 30px;
+    margin-bottom: 100px
 }
+
 
 /* Стили для постов */
 .post {
@@ -209,4 +209,27 @@ section {
         display: inline-block;
         justify-content: left;
     }
+
+    /* Стили для кнопок голосования */
+.vote-buttons {
+    margin-top: 10px;
+}
+
+.vote-buttons form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.vote-buttons input[type="submit"] {
+    background-color: rgb(240, 13, 13);
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.vote-buttons input[type="submit"]:hover {
+    background-color: #d00;
+}
 }
