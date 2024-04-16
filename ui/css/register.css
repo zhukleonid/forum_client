@@ -39,6 +39,10 @@ input[type="password"] {
     border-radius: 5px;
 }
 
+/* Общие стили */
+
+/* Existing styles */
+
 button[type="submit"] {
     width: 100%;
     padding: 10px;
@@ -47,11 +51,32 @@ button[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px; /* Add margin to separate buttons */
 }
 
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+/* New styles for buttons */
+
+button[type="submit"][action="/register"] { /* Style for register button */
+    background-color: #28a745; /* Green color */
+}
+
+button[type="submit"][action="/register"]:hover {
+    background-color: #218838; /* Darker green color on hover */
+}
+
+button[type="submit"][action="/register"][method="post"] { /* Style for register buttons with post method */
+    margin-right: 10px; /* Add margin to separate buttons */
+}
+
+button[type="submit"][action="/register"][method="post"]:last-of-type { /* Style for last register button */
+    margin-right: 0; /* Remove margin from the last button */
+}
+
+/* Media queries for responsiveness */
 
 h4 {
     margin-top: 10px;

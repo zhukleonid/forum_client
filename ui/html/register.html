@@ -24,20 +24,25 @@
         <button type="submit">Зарегистрироваться</button>
         {{range .Errors}}
         <h3><strong>{{.}}</strong></h3>
+    
         {{ end }}
+    </form>
+        <footer>
+            <p>© 2024 | Твои магистрали</p>
+        </footer>
     {{ else }}
     <form action="/register" method="post">
         <label for="name">Имя:</label>
-        <input type="text" id="name" name="name" required><br>
+        <input type="text" id="name" name="name"><br>
         <h4>Имя пользователя допускает:</h4>
         <h4> - буквы русского и английского алфавита</h4>
         <h4> - цифры и нижние подчеркивания</h4>
 
         <label for="email">Почта:</label>
-        <input type="email" id="email" name="email" required><br>
+        <input type="email" id="email" name="email"><br>
 
         <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required><br>
+        <input type="password" id="password" name="password"><br>
         <h4>Пароль должен содержать:</h4>
     
             <h4> - одну заглавную букву,</h4>
@@ -47,16 +52,17 @@
             <h4> - имееть длину не менее 8 символов</h4>
 
         <button type="submit">Зарегистрироваться</button>
-    </form>
-    <form>
-        <h4>Зарегистрироваться с помощью:</h4>
-            <button action="/register" method="post" type="submit">Google</button>
-            <button action="/register" method="post" type="submit">GitHub</button>
+        <form>
+            <h4>Зарегистрироваться с помощью:</h4>
+                <button action="/register" method="post" type="submit">Google</button>
+                <button action="/register" method="post" type="submit">GitHub</button>
+            </form>
         </form>
     </form>
-    {{ end }}
+   
     <footer>
         <p>© 2024 | Твои магистрали</p>
     </footer>
+    {{ end }}
 </body>
 </html>
