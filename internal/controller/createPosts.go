@@ -106,6 +106,10 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 					log.Printf("Получена ошибка сервера от сервиса сервера")
 					return
 				}
+			default:
+				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
+				log.Printf("Получена ошибка сервера от сервиса сервера")
+				return
 			}
 		}
 		// Метод запроса с браузера не POST и не GET

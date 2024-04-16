@@ -33,16 +33,16 @@
     {{ else }}
     <form action="/register" method="post">
         <label for="name">Имя:</label>
-        <input type="text" id="name" name="name"><br>
+        <input type="text" id="name" name="name" required><br>
         <h4>Имя пользователя допускает:</h4>
         <h4> - буквы русского и английского алфавита</h4>
         <h4> - цифры и нижние подчеркивания</h4>
 
         <label for="email">Почта:</label>
-        <input type="email" id="email" name="email"><br>
+        <input type="email" id="email" name="email" required><br>
 
         <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password"><br>
+        <input type="password" id="password" name="password" required><br>
         <h4>Пароль должен содержать:</h4>
     
             <h4> - одну заглавную букву,</h4>
