@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-
-
 func Router(cfg config.Config) *http.Server {
 	router := http.NewServeMux()
 
@@ -28,6 +26,11 @@ func Router(cfg config.Config) *http.Server {
 	router.HandleFunc("/userd3/deletecomment", deleteComment)
 	router.HandleFunc("/logout", logoutUser)
 	router.HandleFunc("/userd3/category", categoryPosts)
+
+	router.HandleFunc("/google/login", Google)            // POST
+	router.HandleFunc("/google/callback", GoogleCallback) // POST
+	router.HandleFunc("/github/login", GitHub)            // POST
+	router.HandleFunc("/github/callback", GitHubCallback) // POST
 
 	fileServer := http.FileServer(http.Dir("ui/css"))
 	router.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))
