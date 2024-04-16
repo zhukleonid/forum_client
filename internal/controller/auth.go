@@ -28,19 +28,7 @@ type githubUserInfo struct {
 	Password string `json:"node_id"`
 }
 
-const (
-	googleAuthEndPoint            = "https://accounts.google.com/o/oauth2/auth"
-	googleAuthEndPointAccessToken = "https://accounts.google.com/o/oauth2/token"
-	googleUserInfoURL             = "https://www.googleapis.com/oauth2/v3/userinfo"
 
-	githubAuthEndPoint       = "https://github.com/login/oauth/authorize"
-	githubAuthEndAccessToken = "https://github.com/login/oauth/access_token"
-	githubUserInfoURL        = "https://api.github.com/user"
-
-	client_idGIT     = "21c2671efe47648ceedd"
-	client_secretGIT = "fbf46e505b7583bd24c5309bd342379f80591e68"
-	callbackGIT      = "http://localhost:8082/github/callback"
-)
 
 func Google(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&response_type=code&scope=profile email", googleAuthEndPoint, "16807684949-bp5bhvp85ar5sfj2iuasmfsf4l6bj4up.apps.googleusercontent.com", "http://localhost:8082/google/callback")

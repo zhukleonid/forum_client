@@ -19,3 +19,17 @@ const (
 	categoryGet = "http://localhost:8083/d3/category?name="
 	auth = "http://localhost:8083/auth"
 )
+
+const (
+	googleAuthEndPoint            = "https://accounts.google.com/o/oauth2/auth"
+	googleAuthEndPointAccessToken = "https://accounts.google.com/o/oauth2/token"
+	googleUserInfoURL             = "https://www.googleapis.com/oauth2/v3/userinfo"
+
+	githubAuthEndPoint       = "https://github.com/login/oauth/authorize"
+	githubAuthEndAccessToken = "https://github.com/login/oauth/access_token"
+	githubUserInfoURL        = "https://api.github.com/user"
+
+	client_idGIT     = "21c2671efe47648ceedd"
+	client_secretGIT = "fbf46e505b7583bd24c5309bd342379f80591e68"
+	callbackGIT      = "http://localhost:8082/github/callback"
+)

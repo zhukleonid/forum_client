@@ -36,7 +36,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 			err = t.ExecuteTemplate(w, "register.html", &errValid)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при рендеринге шаблона страницы регистрации пользователя при проверку на валидность данных. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при рендеринге шаблона страницы регистрации пользователя при проверке данных на валидность. Ошибка: %v", err)
 				return
 			}
 		} else {
@@ -51,7 +51,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 			req, err := http.NewRequest("POST", registry, bytes.NewBuffer(jsonData))
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при формировании запроса на регистрацию пользователя. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при формировании POST запроса на регистрацию пользователя. Ошибка: %v", err)
 				return
 			}
 			// Записываем тип контента в заголовок запроса
@@ -62,7 +62,7 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 			resp, err := client.Do(req)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при передаче запроса от клиента к серверу при регистрации нового пользователя. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при передаче запроса от клиента к сервису forum-api при регистрации нового пользователя. Ошибка: %v", err)
 				return
 			}
 			defer resp.Body.Close()
@@ -76,23 +76,23 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 				discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 				if err != nil {
 					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-					log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+					log.Printf("Произошла ошибка при декодировании ответа ошибки и ее описания от сервиса forum-api на запрос об регистрации нового пользователя. Ошибка: %v", err)
 					return
 				}
 				switch {
 				// Получена ошибка что почта уже используется
 				case discriptionMsg.Discription == "Email already exist":
 					errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+					log.Printf("Пользователь пытается зарегестировать почту которая уже используется")
 					return
 					// Получена ошибка что введены неверные учетные данные
 				case discriptionMsg.Discription == "Invalid Credentials":
 					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-					log.Printf("Не валидные данные")
+					log.Printf("Пользователь ввел не валидные данные")
 					return
 				case discriptionMsg.Discription == "Not Found Any Data":
 					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-					log.Printf("Не найдено")
+					log.Printf("Нет запрашиваемых данных")
 					return
 				default:
 					errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
@@ -102,19 +102,19 @@ func registerPage(w http.ResponseWriter, r *http.Request) {
 				// Получен статус код 405 об неверном методе запроса с сервера
 			case http.StatusMethodNotAllowed:
 				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-				log.Printf("При передаче запроса на регистрацию нового пользователя не верный метод запроса")
+				log.Printf("При передаче запроса сервису forum-api на регистрацию нового пользователя используется не верный метод")
 				return
 				// Получен статус код не 201, 405 или 500
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка на сервере при регистрации пользователя.")
+				log.Printf("Произошла ошибка на сервисе forum-api при регистрации нового пользователя.")
 				return
 			}
 		}
 		// Метод запроса с браузера не POST и не GET
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("При передаче запроса на регистрацию нового пользователя не верный метод запроса")
+		log.Printf("При передаче запроса сервису forum-clinet на регистрацию нового пользователя используется не верный метод")
 		return
 	}
 }
