@@ -24,7 +24,7 @@ func myPosts(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./ui/html/user_posts.html")
 	if err != nil {
 		errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-		log.Printf("Произошла ошибка создания шаблона страницы постов пользователя. Ошибка: %v", err)
+		log.Printf("Произошла ошибка создания шаблона страницы c созданными постами пользователем. Ошибка: %v", err)
 		return
 	}
 	switch r.Method {
@@ -33,7 +33,7 @@ func myPosts(w http.ResponseWriter, r *http.Request) {
 		req, err := http.NewRequest("GET", userPost, nil)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при создании запроса для получения с сервера постов пользователя. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при создании GET запроса для получения с сервиса forum-api всех созданных постов пользователем. Ошибка: %v", err)
 			return
 		}
 		// Добавление из браузера куки в запрос на сервер
@@ -44,7 +44,7 @@ func myPosts(w http.ResponseWriter, r *http.Request) {
 		resp, err := client.Do(req)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при передаче запроса на сервис сервера о получении постов пользователя. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при передаче запроса на сервис forun-api для получении всех созданных постов пользователем. Ошибка: %v", err)
 			return
 		}
 		defer resp.Body.Close()
@@ -54,48 +54,52 @@ func myPosts(w http.ResponseWriter, r *http.Request) {
 			userPosts, err := convertor.ConvertMyPosts(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при конвертации данных обо всех постах пользователя. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при конвертации данных из ответа сервиса forum-api обо всех созданных постах пользователем. Ошибка: %v", err)
 				return
 			}
 			// Рендеринг страницы со всеми постами пользователя
 			err = t.ExecuteTemplate(w, "user_posts.html", userPosts)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при рендеринге страницы со всеми постами пользователя. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при рендеринге страницы со всеми созданными постами пользователя. Ошибка: %v", err)
 				return
 			}
 		case http.StatusInternalServerError:
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об получении всех постов пользователя")
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и её описания от сервиса forum-api на запрос об получении созданных всех постов пользователем")
 				return
 			}
 			switch {
 			// Получена ошибка что почта уже используется
 			case discriptionMsg.Discription == "Email already exist":
 				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Не используется при получении всех созданных постов пользователем")
 				return
 				// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Не валидные данные")
+				log.Printf("Не используется при получении всех созданных постов пользователем")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
 				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Не найдено")
+				log.Printf("Нет запрашиваемых данных об созданных пользователем постах")
 				return
 			default:
-				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение всех постов пользователя")
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Получена не кастомная ошибка от сервиса forum-api при получении данных о всех созданных пользователем постах")
 				return
 			}
+		default:
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при получении данных о всех созданных пользователем постах")
+			return
 		}
 		// Метод запроса с браузера не GET
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("При передаче запроса на домашнюю страницу не верный метод запроса")
+		log.Printf("При передаче запроса сервису forum-client на получение данных о всех созданных пользователем постах используется не верный метод")
 		return
 	}
 }
