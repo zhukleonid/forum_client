@@ -33,7 +33,7 @@ func likePost(w http.ResponseWriter, r *http.Request) {
 		req, err := http.NewRequest("GET", likePosts, nil)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при формировании запроса для получения понравившихся постов пользователя. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при формировании GET запроса для получения понравившихся постов пользователя. Ошибка: %v", err)
 			return
 		}
 		// Записываем куки из браузера в запрос на сервис сервера
@@ -69,37 +69,37 @@ func likePost(w http.ResponseWriter, r *http.Request) {
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об данных постов понравившихся пользователю")
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и ёё описания от сервиса forum-api на запрос об данных постов понравившихся пользователю. Ошибка: %v", err)
 				return
 			}
 			switch {
 			// Получена ошибка что почта уже используется
 			case discriptionMsg.Discription == "Email already exist":
 				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Не используются при получении данных об понравившихся постов")
 				return
 				// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Не валидные данные")
+				log.Printf("Не используются при получении данных об понравившихся постов")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
 				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Не найдено")
+				log.Printf("Нет запрашиваемых данных об понравившихся постах")
 				return
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение данных о постах понравившихся пользователю")
+				log.Printf("Получена не кастомная ошибка от сервиса forum-api на запрос об данных понравившихся пользователю постов")
 				return
 			}
 		default:
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение данных о постах понравившихся пользователю")
-			return
+				log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при запросе об данных понравившихся пользователю постов")
+				return
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("Не верный метод запроса при получении данных о понравившихся постах пользователю")
+		log.Printf("При передаче запроса сервису forum-client на получение данных о всех понравившихся постах пользователю используется не верный метод")
 		return
 	}
 }
