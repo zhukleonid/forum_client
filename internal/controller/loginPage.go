@@ -15,7 +15,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./ui/html/login.html")
 	if err != nil {
 		errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-		log.Printf("Произошла ошибка создании шаблона страницы для входа пользователя. Ошибка: %v", err)
+		log.Printf("Произошла ошибка создания шаблона страницы для входа пользователя. Ошибка: %v", err)
 		return
 	}
 	// Проверка метода запроса
@@ -39,7 +39,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 		req, err := http.NewRequest("POST", login, bytes.NewBuffer(jsonData))
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при формировании запроса на вход пользователя. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при формировании POST запроса на вход пользователя. Ошибка: %v", err)
 			return
 		}
 		// Записываем тип контента в заголовок запроса
@@ -50,7 +50,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 		resp, err := client.Do(req)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при передаче запроса от клиента к серверу при входе пользователя. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при передаче запроса от клиента к сервису forum-api при входе пользователя. Ошибка: %v", err)
 			return
 		}
 		defer resp.Body.Close()
@@ -62,14 +62,14 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 			cookie, err := convertor.ConvertFirstCookie(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при конвертации кук из ответа. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при конвертации куки из ответа сервиса forum-api на вход пользователя. Ошибка: %v", err)
 				return
 			}
 			// Получение в глобальную переменную имени вошедшего пользователя
 			clientName, err = convertor.DecodeClientName(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при получении имени пользователя")
+				log.Printf("Произошла ошибка при получении имени пользователя из ответа сервиса forum-api на вход пользователя. Ошибка: %v", err)
 				return
 			}
 			// Записываем клиента в хеш-таблицу
@@ -83,25 +83,29 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об входе пользователя")
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и ее описания от сервиса forum-api на запрос о входе пользователя")
 				return
 			}
 			switch {
 			// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Невалидные данные")
+				log.Printf("Пользователь ввел не валидные данные при входе")
 				return
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка сервере. Ошибка: %v", err)
+				log.Printf("Получена не кастомная ошибка от сервиса forum-api при входе пользователя")
 				return
 			}
+		default:
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при входе пользователя")
+			return
 		}
 		// Метод запроса с браузера не POST и не GET
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("При передаче запроса на вход пользователя не верный метод запроса")
+		log.Printf("При передаче запроса сервису forum-client на вход пользователя используется не верный метод")
 		return
 	}
 }

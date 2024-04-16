@@ -15,7 +15,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./ui/html/home.html")
 	if err != nil {
 		errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-		log.Printf("Произошла ошибка создании шаблона страницы для входа пользователя. Ошибка: %v", err)
+		log.Printf("Произошла ошибка создании шаблона домашней страницы. Ошибка: %v", err)
 		return
 	}
 	// Проверка метода запроса
@@ -25,7 +25,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		resp, err := http.Get(allPost)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при конвертации данных о входе пользователя в JSON. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при отправке GET запроса на получение данных обо всех постах для домашней страницы. Ошибка: %v", err)
 			return
 		}
 		defer resp.Body.Close()
@@ -36,7 +36,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 			result, err := convertor.ConvertAllPosts(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при конвертации данных обо всех постах из JSON. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при конвертации данных обо всех постах из JSON для домашней страницы. Ошибка: %v", err)
 				return
 			}
 			if cahe.CategoryPosts != nil {
@@ -46,7 +46,6 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 				nicname string // Хранит имя пользователя
 				cookie  bool   // Хранит наличие куки
 			)
-			r.Cookies()
 			// Проверка на наличие куки
 			switch {
 			// Если куки не получены передаем пустое имя и отсутствие куки
@@ -94,34 +93,38 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервиса forum-api на запрос об получении всех постов для домашней страницы")
 				return
 			}
 			switch {
 			// Получена ошибка что почта уже используется
 			case discriptionMsg.Discription == "Email already exist":
 				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Не используется для домашней страницы")
 				return
 				// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Не валидные данные")
+				log.Printf("Не используется для домашней страницы")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
 				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Не найдено")
+				log.Printf("Нет запрашиваемых данных о постах для домашней страницы")
 				return
 			default:
-				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на создание поста")
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Получена не кастомная ошибка от сервиса forum-api при получении всех постов для домашней страницы")
 				return
 			}
+		default:
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при получении всех постов для домашней страницы")
+			return
 		}
 		// Метод запроса с браузера не POST и не GET
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("При передаче запроса на домашнюю страницу не верный метод запроса")
+		log.Printf("При передаче запроса сервису forum-client на получение домашней страницы используется не верный метод")
 		return
 	}
 }
