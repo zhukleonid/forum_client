@@ -28,8 +28,6 @@ type githubUserInfo struct {
 	Password string `json:"node_id"`
 }
 
-
-
 func Google(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&response_type=code&scope=profile email", googleAuthEndPoint, "16807684949-bp5bhvp85ar5sfj2iuasmfsf4l6bj4up.apps.googleusercontent.com", "http://localhost:8082/google/callback")
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
@@ -80,19 +78,20 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	req1, err := http.NewRequest("POST", auth, bytes.NewBuffer(us1))
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	req1.Header.Set("Content-Type", "application/json")
-	client := http.Client{}
+		req1, err := http.NewRequest("POST", auth, bytes.NewBuffer(us1))
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		req1.Header.Set("Content-Type", "application/json")
+		client := http.Client{}
 
-	resp1, err := client.Do(req1)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+		resp1, err := client.Do(req1)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
 	defer resp1.Body.Close()
 	switch resp1.StatusCode {
 	// Получен статус код 201 об успешной регистрации пользователя в системе
@@ -123,7 +122,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 }
 
 func GitHub(w http.ResponseWriter, r *http.Request) {
-	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=user:email", githubAuthEndPoint, "21c2671efe47648ceedd", "http://localhost:8080/github/callback")
+	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=user:email", githubAuthEndPoint, "21c2671efe47648ceedd", "http://localhost:8082/github/callback")
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
@@ -133,7 +132,7 @@ func GitHubCallback(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error")
 		return
 	}
-	req, err := http.NewRequest("POST", githubAuthEndAccessToken, strings.NewReader(fmt.Sprintf("code=%s&client_id=%s&client_secret=%s&redirect_uri=%s&grant_type=authorization_code", code, client_idGIT, client_secretGIT, callbackGIT)))
+	req, err := http.NewRequest("POST", githubAuthEndAccessToken, strings.NewReader(fmt.Sprintf("code=%s&client_id=%s&client_secret=%s&redirect_uri=%s&grant_type=authorization_code", code, "21c2671efe47648ceedd", "acb9aa72c6f829fa1262760243287dfd71566859", "http://localhost:8082/github/callback")))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -148,8 +147,9 @@ func GitHubCallback(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-
+	fmt.Println(string(body))
 	token, err := ExtractAccessTokenFromResponse(string(body))
+
 	if token == "" {
 		log.Println("Bad Credentials")
 		return
@@ -167,8 +167,49 @@ func GitHubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// DO auth
-	WriteJSON(w, http.StatusOK, github)
+	user := model.UserReq{Name: github.Name, Email: github.Email, Password: github.Password}
+	userMarshal, err := json.Marshal(user)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	req1, err := http.NewRequest("POST", auth, bytes.NewBuffer(userMarshal))
+	if err != nil {
+
+		log.Println(err)
+		return
+	}
+	req1.Header.Set("Content-Type", "application/json")
+	client1 := &http.Client{}
+
+	re, err1 := client1.Do(req1)
+	if err1 != nil {
+		log.Println(err)
+		return
+	}
+	defer re.Body.Close()
+
+	switch re.StatusCode {
+	case http.StatusOK:
+		var clientName string
+		cookie, err := convertor.ConvertFirstCookie(re)
+		if err != nil {
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Произошла ошибка при конвертации кук из ответа. Ошибка: %v", err)
+			return
+		}
+		clientName, err = convertor.DecodeClientName(re)
+		if err != nil {
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Произошла ошибка при получении имени пользователя")
+			return
+		}
+		cahe.Username[cookie.Value] = clientName
+		http.SetCookie(w, cookie)
+		http.Redirect(w, r, "http://localhost:8082/userd3", 302)
+		return
+	}
 }
 
 func ExtractValueFromBody(body []byte, key string) string {
