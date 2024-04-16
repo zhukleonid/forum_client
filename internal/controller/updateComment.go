@@ -38,7 +38,7 @@ func updateComment(w http.ResponseWriter, r *http.Request) {
 		updateComment, err := convertor.ConvertUpdateComment(r)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при конвертации данных для редактирования комментария. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при конвертации данных из ответа сервиса forum-api для редактирования комментария. Ошибка: %v", err)
 			return
 		}
 		// Рендеринг страницы с изменениями для комментариев
@@ -59,14 +59,14 @@ func updateComment(w http.ResponseWriter, r *http.Request) {
 			jsonData, err := convertor.ConvertUpdateCommentUser(r)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при конвертации данных для запроса редактирования комментария. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при конвертации данных в JSON для запроса в сервис forum-api об редактировании комментария. Ошибка: %v", err)
 				return
 			}
 			// Формируем запрос не сервис сервера
 			req, err := http.NewRequest("PUT", updateComments, bytes.NewBuffer(jsonData))
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при формировании запроса редактирования комментария. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при формировании PUT запроса на сервис forum-api для редактирования комментария. Ошибка: %v", err)
 				return
 			}
 			// Записываем куки из браузера в запрос на сервис сервера
@@ -78,7 +78,7 @@ func updateComment(w http.ResponseWriter, r *http.Request) {
 			resp, err := client.Do(req)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка отправке запроса на сервис сервера для редактирования комментария. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при отправке запроса на сервис forum-api для редактирования комментария. Ошибка: %v", err)
 				return
 			}
 			defer resp.Body.Close()
@@ -91,38 +91,38 @@ func updateComment(w http.ResponseWriter, r *http.Request) {
 				discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 				if err != nil {
 					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-					log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об изменении комментария")
+					log.Printf("Произошла ошибка при декодировании ответа ошибки и её описания от сервиса forum-api на запрос об изменении комментария")
 					return
 				}
 				switch {
 				// Получена ошибка что почта уже используется
 				case discriptionMsg.Discription == "Email already exist":
 					errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+					log.Printf("Не используется при редактировании комментария")
 					return
 					// Получена ошибка что введены неверные учетные данные
 				case discriptionMsg.Discription == "Invalid Credentials":
 					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-					log.Printf("Не валидные данные")
+					log.Printf("Не валидные данные при редактировании комментария")
 					return
 				case discriptionMsg.Discription == "Not Found Any Data":
 					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-					log.Printf("Не найдено")
+					log.Printf("Не запрашиваемых данных при редактировании комментария")
 					return
 				default:
 					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-					log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о комментарии который пользователь собирается редактировать")
+					log.Printf("Получена не кастомная ошибка от сервиса forum-api при редактировании комментария")
 					return
 				}
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение старницы с данными о комментарии который пользователь собирается редактировать")
+				log.Printf("Получен статус-код не 202 и 500 от сервиса forum-api при редактировании комментария")
 				return
 			}
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("Не верный метод запроса при изменении данных комментария")
+		log.Printf("При передаче запроса сервису forum-client на редактирование комментария используется не верный метод")
 		return
 	}
 }
