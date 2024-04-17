@@ -5,12 +5,12 @@ import (
 	"log"
 	"lzhuk/clients/internal/cahe"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/internal/helpers"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/helpers"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 )
 
-func homePage(w http.ResponseWriter, r *http.Request) {
+func HomePage(w http.ResponseWriter, r *http.Request) {
 	// Создание шаблона для домашней
 	t, err := template.ParseFiles("./ui/html/home.html")
 	if err != nil {

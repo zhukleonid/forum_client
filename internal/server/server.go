@@ -2,13 +2,13 @@ package server
 
 import (
 	"log"
-	"lzhuk/clients/internal/controller"
+	"lzhuk/clients/internal/router"
 	"lzhuk/clients/pkg/config"
 	"net/http"
 )
 
 func StartServer(cfg config.Config) {
-	server := controller.Router(cfg)
+	server := router.Router(cfg)
 	err := server.ListenAndServe()
 	if err != nil {
 		if err != http.ErrServerClosed {

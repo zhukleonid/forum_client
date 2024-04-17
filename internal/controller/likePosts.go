@@ -4,13 +4,13 @@ import (
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/internal/helpers"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/helpers"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 	"strings"
 )
 
-func likePost(w http.ResponseWriter, r *http.Request) {
+func LikePost(w http.ResponseWriter, r *http.Request) {
 	// Проверяем что в запросе присутствуют куки с валидным имененем
 	switch {
 	case len(r.Cookies()) < 1:
@@ -94,8 +94,8 @@ func likePost(w http.ResponseWriter, r *http.Request) {
 			}
 		default:
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при запросе об данных понравившихся пользователю постов")
-				return
+			log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при запросе об данных понравившихся пользователю постов")
+			return
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)

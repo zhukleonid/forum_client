@@ -3,11 +3,11 @@ package controller
 import (
 	"html/template"
 	"log"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 )
 
-func startPage(w http.ResponseWriter, r *http.Request) {
+func StartPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
 		log.Printf("Неверный метод в запросе получения стартовой страницы")

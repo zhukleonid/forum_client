@@ -6,11 +6,11 @@ import (
 	"log"
 	"lzhuk/clients/internal/convertor"
 	"lzhuk/clients/internal/validation"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 )
 
-func registerPage(w http.ResponseWriter, r *http.Request) {
+func RegisterPage(w http.ResponseWriter, r *http.Request) {
 	// Создание шаблона для страницы регистрации
 	t, err := template.ParseFiles("./ui/html/register.html")
 	if err != nil {

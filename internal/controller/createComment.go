@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"log"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/internal/helpers"
+	"lzhuk/clients/pkg/helpers"
 	"lzhuk/clients/internal/validation"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 	"strings"
 )
 
-func createComment(w http.ResponseWriter, r *http.Request) {
+func CreateComment(w http.ResponseWriter, r *http.Request) {
 	// Проверяем что в запросе присутствуют куки с валидным имененем
 	switch {
 	case len(r.Cookies()) < 1:

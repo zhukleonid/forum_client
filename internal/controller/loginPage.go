@@ -6,11 +6,11 @@ import (
 	"log"
 	"lzhuk/clients/internal/cahe"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 )
 
-func loginPage(w http.ResponseWriter, r *http.Request) {
+func LoginPage(w http.ResponseWriter, r *http.Request) {
 	// Создание шаблона для страницы входа пользователем
 	t, err := template.ParseFiles("./ui/html/login.html")
 	if err != nil {

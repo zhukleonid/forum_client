@@ -5,13 +5,13 @@ import (
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/internal/helpers"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/helpers"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 	"strings"
 )
 
-func getPost(w http.ResponseWriter, r *http.Request) {
+func GetPost(w http.ResponseWriter, r *http.Request) {
 	// Проверяем что в запросе присутствуют куки с валидным имененем
 	switch {
 	case len(r.Cookies()) < 1:

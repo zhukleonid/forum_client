@@ -5,12 +5,12 @@ import (
 	"log"
 	"lzhuk/clients/internal/cahe"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/internal/helpers"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/helpers"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 )
 
-func categoryPosts(w http.ResponseWriter, r *http.Request) {
+func CategoryPosts(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		// Передаем на сервис сервера запрос на получение постов по конкретной категории

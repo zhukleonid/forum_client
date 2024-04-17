@@ -10,7 +10,7 @@ import (
 	"lzhuk/clients/internal/cahe"
 	"lzhuk/clients/internal/convertor"
 	"lzhuk/clients/model"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 	"net/url"
 	"strings"

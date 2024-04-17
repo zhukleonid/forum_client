@@ -6,14 +6,14 @@ import (
 	"html/template"
 	"log"
 	"lzhuk/clients/internal/convertor"
-	"lzhuk/clients/internal/helpers"
+	"lzhuk/clients/pkg/helpers"
 	"lzhuk/clients/internal/validation"
-	"lzhuk/clients/pkg/config/errors"
+	"lzhuk/clients/pkg/errors"
 	"net/http"
 	"strings"
 )
 
-func updatePost(w http.ResponseWriter, r *http.Request) {
+func UpdatePost(w http.ResponseWriter, r *http.Request) {
 	// Проверяем что в запросе присутствуют куки с валидным имененем
 	switch {
 	case len(r.Cookies()) < 1:
