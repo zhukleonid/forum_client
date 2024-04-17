@@ -15,9 +15,11 @@ func categoryPosts(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		// Передаем на сервис сервера запрос на получение постов по конкретной категории
 		newCategoryGet := fmt.Sprintf(categoryGet+"%s", r.FormValue("category"))
-		fmt.Println(newCategoryGet)
+		
 		req, err := http.NewRequest("GET", newCategoryGet, nil)
 		if err != nil {
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Произошла ошибка при формировании GET запроса на сервис forum-api об получении постов по конкретно выбранной категории. Ошибка: %v", err)
 			return
 		}
 		// Добавление из браузера куки в запрос на сервер
@@ -29,53 +31,59 @@ func categoryPosts(w http.ResponseWriter, r *http.Request) {
 		resp, err := client.Do(req)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при передаче запроса об создании нового поста на сервис сервера. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при передаче запроса на сервис forum-api для получения постов по конкретно выбранной категории. Ошибка: %v", err)
 			return
 		}
 		defer resp.Body.Close()
+		// Конвертируем полученные данные об постах по конкретной категории
 		result, err := convertor.ConvertCategoryPosts(resp)
 		if err != nil {
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Произошла ошибка при конвертации данных полученных из ответа от сервиса forum-api об постах по конкретно выбранной категории. Ошибка: %v", err)
 			return
 		}
+
+		// Вносим в кеш результаты по выбранной категории
 		cahe.CategoryPosts = result
 		switch resp.StatusCode {
 		case http.StatusOK:
 			http.Redirect(w, r, "http://localhost:8082/userd3", 302)
+			return
 		case http.StatusInternalServerError:
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и её описания от сервиса forum-api на запрос об постах по конкретно выбранной категории. Ошибка: %v", err)
 				return
 			}
 			switch {
 			// Получена ошибка что почта уже используется
 			case discriptionMsg.Discription == "Email already exist":
 				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Не используется при получении постов по конкретно выбранной категории")
 				return
 				// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Не валидные данные")
+				log.Printf("Не валидные данные при запросе на получение постов по конкретно выбранной категории")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
 				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Не найдено")
+				log.Printf("Запрашиваемые данные не найдены при запросе на получение постов по конкретно выбранной категории")
 				return
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение постов под конкретной категорией")
+				log.Printf("Получена не кастомная ошибка от сервиса forum-api при запросе на получение постов по конекретно выбранной категории")
 				return
 			}
 		default:
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на получение постов под конкретной категорией")
+			log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при запросе на получение постов по конкретно выбранной категории")
 			return
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("Не верный метод запроса при передаче запроса на категорию")
+		log.Printf("При передаче запроса сервису forum-client на получение постов по конкретно выбранной категории используется не верный метод")
 		return
 	}
 }
