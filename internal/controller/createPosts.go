@@ -26,7 +26,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./ui/html/create_post.html")
 	if err != nil {
 		errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-		log.Printf("Произошла ошибка создания шаблона страницы для создания поста. Ошибка: %v", err)
+		log.Printf("Произошла ошибка создания шаблона страницы для создания нового поста пользователем. Ошибка: %v", err)
 		return
 	}
 	// Проверка метода запроса
@@ -36,7 +36,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		err = t.ExecuteTemplate(w, "create_post.html", nil)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при рендеринге страницы создания поста. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при рендеринге страницы создания нового поста пользователем. Ошибка: %v", err)
 			return
 		}
 	case http.MethodPost:
@@ -44,7 +44,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		validDatePost, _ := validation.ValidDatePost(r)
 		if validDatePost == false {
 			errorPage(w, errors.EmptyDatePost, http.StatusBadRequest)
-			log.Printf("Произошла ошибка при рендеринге шаблона страницы создания поста пользователем при проверке на валидность данных. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при рендеринге шаблона страницы создания нового поста пользователем при проверке на валидность данных. Ошибка: %v", err)
 			return
 
 		} else {
@@ -52,14 +52,14 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			jsonData, err := convertor.ConvertCreatePost(r)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при конвертации данных для создания нового поста в JSON. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при конвертации данных в JSON для передачи на сервис forum-api при создании нового поста пользоваталем. Ошибка: %v", err)
 				return
 			}
 			// Создание POST запроса на внесение информации о новом посте
 			req, err := http.NewRequest("POST", createPosts, bytes.NewBuffer(jsonData))
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при создании запроса о новом посте на сервис сервера. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при формировании POST запроса на сервис forum-api при создании нового поста пользователем. Ошибка: %v", err)
 				return
 			}
 			// Добавление из браузера куки в запрос на сервер
@@ -71,7 +71,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 			resp, err := client.Do(req)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при передаче запроса об создании нового поста на сервис сервера. Ошибка: %v", err)
+				log.Printf("Произошла ошибка при передаче запроса на сервис forum-api при создании нового поста пользоваталем. Ошибка: %v", err)
 				return
 			}
 			defer resp.Body.Close()
@@ -83,39 +83,39 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 				discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 				if err != nil {
 					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-					log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об регистрации пользователя")
+					log.Printf("Произошла ошибка при декодировании ответа ошибки и её описания от сервиса forum-api на запрос о создании нового поста пользователя. Ошибка: %v", err)
 					return
 				}
 				switch {
 				// Получена ошибка что почта уже используется
 				case discriptionMsg.Discription == "Email already exist":
 					errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-					log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+					log.Printf("Не используется для создания нового поста")
 					return
 					// Получена ошибка что введены неверные учетные данные
 				case discriptionMsg.Discription == "Invalid Credentials":
 					errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-					log.Printf("Не валидные данные")
+					log.Printf("Не валидные данные при создании нового поста")
 					return
 				case discriptionMsg.Discription == "Not Found Any Data":
 					errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-					log.Printf("Не найдено")
+					log.Printf("Не используется при создании нового поста")
 					return
 				default:
-					errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-					log.Printf("Получена ошибка сервера от сервиса сервера")
+					errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+					log.Printf("Получена не кастомная ошибка от сервиса forum-api при создании нового поста пользователем")
 					return
 				}
 			default:
-				errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-				log.Printf("Получена ошибка сервера от сервиса сервера")
+				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+				log.Printf("Получен статус-код не 201 или 500 от сервиса forum-api при создании нового поста пользователем")
 				return
 			}
 		}
 		// Метод запроса с браузера не POST и не GET
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("При передаче запроса на домашнюю страницу не верный метод запроса")
+		log.Printf("При передаче запроса сервису forum-client на создание нового поста пользователем используется не верный метод")
 		return
 	}
 }

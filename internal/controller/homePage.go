@@ -118,7 +118,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 			}
 		default:
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Получен статус-код не 200 и 500 от сервиса forum-api при получении всех постов для домашней страницы")
+			log.Printf("Получен статус-код не 200 или 500 от сервиса forum-api при получении всех постов для домашней страницы")
 			return
 		}
 		// Метод запроса с браузера не POST и не GET
