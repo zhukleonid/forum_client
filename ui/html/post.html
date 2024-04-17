@@ -88,22 +88,10 @@
             {{end}}
     <form class="comment-form" action="/userd3/createcomment" method="POST">
         <input type="hidden" name="postId" value="{{.Post.PostId}}">
-        <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50"></textarea><br>
+        <textarea name="comment" placeholder="Введите ваш комментарий" rows="4" cols="50" required></textarea><br>
         <input type="submit" value="Отправить">
     </form>
     </section>
-    <script>
-     // Код для прокрутки к якорю при загрузке страницы
-    document.addEventListener("DOMContentLoaded", function() {
-        if (window.location.hash) {
-            const anchorElement = document.querySelector(window.location.hash);
-            if (anchorElement) {
-                anchorElement.scrollIntoView({ behavior: "smooth" });
-            }
-        }
-    });
-    </script>
-   
     <footer>
         <p>© 2024 | Твой диаметр</p>
     </footer>

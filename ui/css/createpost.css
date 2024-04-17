@@ -55,7 +55,8 @@ nav ul li a:hover {
 form {
     background-color: rgb(255, 255, 255);
     padding: 20px;
-    margin: 20px 0; /* Убираем отступы по бокам, оставляем отступ сверху и снизу */
+    margin-top: 20px; /* Убираем отступы по бокам, оставляем отступ сверху и снизу */
+    margin-bottom: 100px;
     border-radius: 10px;
 }
 

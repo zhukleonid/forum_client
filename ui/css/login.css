@@ -54,6 +54,17 @@ button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
+.social-icons {
+    text-align: center; /* Выравниваем по центру */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.social-icons a {
+    display: inline-block; /* Размещаем кнопки на одной строке */
+    margin: 0 10px; /* Отступ между изображениями */
+    vertical-align: middle; /* Выравнивание по вертикали */
+}
+
 /* Футер */
 footer {
     background-color: rgb(236, 110, 38);
@@ -91,5 +102,13 @@ section {
         padding: 10px 20px;
         border-radius: 5px;
         font-size: 16px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+}
+
+/* Медиа-запросы для адаптивности */
+@media only screen and (max-width: 812px) {
+    form {
+        max-width: 300px; /* Уменьшаем ширину формы для мобильных устройств */
+        margin-bottom: 108px;
     }
 }

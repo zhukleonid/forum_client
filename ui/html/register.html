@@ -22,6 +22,15 @@
         <input type="password" id="password" name="password" required><br>
 
         <button type="submit">Зарегистрироваться</button>
+        <h4>или зарегистрироваться с помощью:</h4>
+        <div class="social-icons">
+            <a href="/google/login">
+                <img src="/ui/img/kisspng-google-logo-google-search-search-engine-optimizati-5be4b4e65a01a8.7135521715417151743687.png" alt="Google" style="width: 40px; height: auto;">
+            </a>
+            <a href="/github/login">
+                <img src="/ui/img/0019696_github-authentication.png" alt="GitHub" style="width: 35px; height: auto;">
+            </a>
+        </div>
         {{range .Errors}}
         <h3><strong>{{.}}</strong></h3>
     
@@ -53,10 +62,14 @@
 
         <button type="submit">Зарегистрироваться</button>
         <h4>или зарегистрироваться с помощью:</h4>
-        <a href="/google/login">
-            <img src="/ui/img/kisspng-google-logo-google-images-tml-logo-5b5af50cc9b9a2.2298122915326876288263.png" alt="Google">
-        </a>
-        <a href="/github/login" method="POST" type="submit">GitHub</a>
+        <div class="social-icons">
+            <a href="/google/login">
+                <img src="/ui/img/kisspng-google-logo-google-search-search-engine-optimizati-5be4b4e65a01a8.7135521715417151743687.png" alt="Google" style="width: 40px; height: auto;">
+            </a>
+            <a href="/github/login">
+                <img src="/ui/img/0019696_github-authentication.png" alt="GitHub" style="width: 35px; height: auto;">
+            </a>
+        </div>
     </form>
     <footer>
         <p>© 2024 | Твои магистрали</p>

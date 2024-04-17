@@ -28,13 +28,17 @@ func Router(cfg config.Config) *http.Server {
 	router.HandleFunc("/logout", controller.LogoutUser)
 	router.HandleFunc("/userd3/category", controller.CategoryPosts)
 
-	router.HandleFunc("/google/login", controller.Google)            
-	router.HandleFunc("/google/callback", controller.GoogleCallback) 
-	router.HandleFunc("/github/login", controller.GitHub)            
-	router.HandleFunc("/github/callback", controller.GitHubCallback) 
+	router.HandleFunc("/google/login", controller.Google)
+	router.HandleFunc("/google/callback", controller.GoogleCallback)
+	router.HandleFunc("/github/login", controller.GitHub)
+	router.HandleFunc("/github/callback", controller.GitHubCallback)
 
 	fileServer := http.FileServer(http.Dir("ui/css"))
 	router.Handle("/ui/css/", http.StripPrefix("/ui/css/", fileServer))
+
+	fileServerImg := http.FileServer(http.Dir("ui/img"))
+	router.Handle("/ui/img/", http.StripPrefix("/ui/img/", fileServerImg))
+
 	s := &http.Server{
 		Addr:         cfg.Port,
 		ReadTimeout:  time.Duration(cfg.ReadTimeout) * time.Second,  // время ожидания для чтения данных

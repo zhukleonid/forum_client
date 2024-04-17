@@ -20,7 +20,7 @@ form {
     max-width: 400px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 80px; /* Добавляем нижний отступ, равный высоте футера */
+    margin-bottom: 108px; /* Добавляем нижний отступ, равный высоте футера */
 }
 
 
@@ -58,24 +58,6 @@ button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* New styles for buttons */
-
-button[type="submit"][action="/register"] { /* Style for register button */
-    background-color: #28a745; /* Green color */
-}
-
-button[type="submit"][action="/register"]:hover {
-    background-color: #218838; /* Darker green color on hover */
-}
-
-button[type="submit"][action="/register"][method="post"] { /* Style for register buttons with post method */
-    margin-right: 10px; /* Add margin to separate buttons */
-}
-
-button[type="submit"][action="/register"][method="post"]:last-of-type { /* Style for last register button */
-    margin-right: 0; /* Remove margin from the last button */
-}
-
 /* Media queries for responsiveness */
 
 h4 {
@@ -85,6 +67,17 @@ h4 {
 h4 strong {
     color: #007bff;
 }
+.social-icons {
+    text-align: center; /* Выравниваем по центру */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.social-icons a {
+    display: inline-block; /* Размещаем кнопки на одной строке */
+    margin: 0 10px; /* Отступ между изображениями */
+    vertical-align: middle; /* Выравнивание по вертикали */
+}
+
 
 /* Специфические стили для разных состояний формы */
 form:first-of-type {
