@@ -1,25 +1,54 @@
 package controller
 
-const (
-	allPost     = "http://localhost:8083/d3"
-	registry    = "http://localhost:8083/register"
-	login       = "http://localhost:8083/login"
-	createPosts = "http://localhost:8083/d3/post-create"
-	userPost    = "http://localhost:8083/d3/user-posts"
-	getUserPost     = "http://localhost:8083/d3/post?id="
-	createComments = "http://localhost:8083/d3/comment-create"
-	updatePosts = "http://localhost:8083/d3/post-update?id="
-	deletePosts = "http://localhost:8083/d3/post-delete?id="
-	votePosts = "http://localhost:8083/d3/post-like"
-	voteComments = "http://localhost:8083/d3/comment-like"
-	likePosts = "http://localhost:8083/d3/user-likes"
-	updateComments = "http://localhost:8083/d3/comment-update"
-	deleteComments = "http://localhost:8083/d3/comment-delete"
-	logoutUsers = "http://localhost:8083/logout"
-	categoryGet = "http://localhost:8083/d3/category?name="
-	auth = "http://localhost:8083/auth"
+import (
+	"lzhuk/clients/pkg/config"
+	"strconv"
 )
 
+// Точки для работы с сервисом forum-api
+var (
+	allPost        = "" // Получение всех постов
+	registry       = "" // Регистрация нового пользователя
+	login          = "" // Вход пользователя в учетную запись
+	createPosts    = "" // Создание нового поста пользователем
+	userPost       = "" // Получение постов созданных пользователем
+	getUserPost    = "" // Получение конкретного поста по индентификатору
+	createComments = "" // Создание коментариев пользователем под постом
+	updatePosts    = "" // Изменение поста пользователем
+	deletePosts    = "" // Удаление поста пользователем
+	votePosts      = "" // Постановка голоса на пост пользователем
+	voteComments   = "" // Постанока голоса на комментарий пользователем
+	likePosts      = "" // Получение постов которые понравились пользователю
+	updateComments = "" // Изменение комментария пользователем
+	deleteComments = "" // Удаление комментария пользователем
+	logoutUsers    = "" // Выход пользовтаеля из учетной записи
+	categoryGet    = "" // Получение постов по конкретной категории
+	auth           = "" // Регистрация и вход пользователя через стороннего провайдера
+)
+
+func InitPointApi(cfg config.Config) {
+	port := strconv.Itoa(cfg.PortServer)
+
+	allPost = "http://localhost:" + port + "/d3"                       // Получение всех постов
+	registry = "http://localhost:" + port + "/register"                // Регистрация нового пользователя
+	login = "http://localhost:" + port + "/login"                      // Вход пользователя в учетную запись
+	createPosts = "http://localhost:" + port + "/d3/post-create"       // Создание нового поста пользователем
+	userPost = "http://localhost:" + port + "/d3/user-posts"           // Получение постов созданных пользователем
+	getUserPost = "http://localhost:" + port + "/d3/post?id="          // Получение конкретного поста по индентификатору
+	createComments = "http://localhost:" + port + "/d3/comment-create" // Создание коментариев пользователем под постом
+	updatePosts = "http://localhost:" + port + "/d3/post-update?id="   // Изменение поста пользователем
+	deletePosts = "http://localhost:" + port + "/d3/post-delete?id="   // Удаление поста пользователем
+	votePosts = "http://localhost:" + port + "/d3/post-like"           // Постановка голоса на пост пользователем
+	voteComments = "http://localhost:" + port + "/d3/comment-like"     // Постанока голоса на комментарий пользователем
+	likePosts = "http://localhost:" + port + "/d3/user-likes"          // Получение постов которые понравились пользователю
+	updateComments = "http://localhost:" + port + "/d3/comment-update" // Изменение комментария пользователем
+	deleteComments = "http://localhost:" + port + "/d3/comment-delete" // Удаление комментария пользователем
+	logoutUsers = "http://localhost:" + port + "/logout"               // Выход пользовтаеля из учетной записи
+	categoryGet = "http://localhost:" + port + "/d3/category?name="    // Получение постов по конкретной категории
+	auth = "http://localhost:" + port + "/auth"                        // Регистрация и вход пользователя через стороннего провайдера
+}
+
+// Точки для работы с провайдерами Google и Github
 const (
 	googleAuthEndPoint            = "https://accounts.google.com/o/oauth2/auth"
 	googleAuthEndPointAccessToken = "https://accounts.google.com/o/oauth2/token"
