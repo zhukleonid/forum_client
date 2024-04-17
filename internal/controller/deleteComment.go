@@ -27,14 +27,15 @@ func deleteComment(w http.ResponseWriter, r *http.Request) {
 		// Конвертируем данные для удаления комментария
 		jsonData, err := convertor.ConvertDeleteComment(r)
 		if err != nil {
-			http.Error(w, "error update comment", http.StatusInternalServerError)
+			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
+			log.Printf("Произошла ошибка при конвертации данных об удалении комментария в JSON для передачи сервису forum-api. Ошибка: %v", err)
 			return
 		}
 		// Формируем запрос на удаление комментария
 		req, err := http.NewRequest("DELETE", deleteComments, bytes.NewBuffer(jsonData))
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при формировании запроса на удаления комментария. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при формировании DELETE запроса сервису forum-api на удаления комментария пользователя. Ошибка: %v", err)
 			return
 		}
 		// Записываем куки из браузера в запрос на сервис сервера
@@ -45,7 +46,7 @@ func deleteComment(w http.ResponseWriter, r *http.Request) {
 		resp, err := client.Do(req)
 		if err != nil {
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Произошла ошибка при передаче запроса на сервис сервера для удаления комментария. Ошибка: %v", err)
+			log.Printf("Произошла ошибка при передаче запроса на сервис forum-api для удаления комментария пользователя. Ошибка: %v", err)
 			return
 		}
 
@@ -59,37 +60,37 @@ func deleteComment(w http.ResponseWriter, r *http.Request) {
 			discriptionMsg, err := convertor.DecodeErrorResponse(resp)
 			if err != nil {
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Произошла ошибка при декодировании ответа ошибки и описания от сервера на запрос об изменении комментария")
+				log.Printf("Произошла ошибка при декодировании ответа ошибки и её описания от сервиса forum-api на запрос об удалении комментария пользователя. Ошибка: %v", err)
 				return
 			}
 			switch {
 			// Получена ошибка что почта уже используется
 			case discriptionMsg.Discription == "Email already exist":
 				errorPage(w, errors.EmailAlreadyExists, http.StatusConflict)
-				log.Printf("Пользователь пытается зарегестировать почту которая используется под другим аккаунтом")
+				log.Printf("Не используется при удалении комментариев")
 				return
 				// Получена ошибка что введены неверные учетные данные
 			case discriptionMsg.Discription == "Invalid Credentials":
 				errorPage(w, errors.InvalidCredentials, http.StatusBadRequest)
-				log.Printf("Не валидные данные")
+				log.Printf("Не валидные данные при удаления комментария")
 				return
 			case discriptionMsg.Discription == "Not Found Any Data":
 				errorPage(w, errors.NotFoundAnyDate, http.StatusBadRequest)
-				log.Printf("Не найдено")
+				log.Printf("Не найденны данные об удаляемом комментарии")
 				return
 			default:
 				errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-				log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на удаления комментария")
+				log.Printf("Получена не кастомная ошибка от сервиса forum-api при удалении комментария пользователя")
 				return
 			}
 		default:
 			errorPage(w, errors.ErrorServer, http.StatusInternalServerError)
-			log.Printf("Получена ошибка сервера от сервиса сервера при передаче запроса на удаления комментария")
+			log.Printf("Получен статус-код не 202 или 500 от сервиса forum-api при удалении комментария пользователя")
 			return
 		}
 	default:
 		errorPage(w, errors.ErrorNotMethod, http.StatusMethodNotAllowed)
-		log.Printf("Не верный метод запроса при удаления комментария")
+		log.Printf("При передаче запроса сервису forum-client на удаление комментария пользователя используется не верный метод")
 		return
 	}
 }
