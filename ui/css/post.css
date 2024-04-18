@@ -125,7 +125,7 @@ section {
 .comment-form input[type="submit"] {
     margin-top: 10px; /* Отступ сверху от поля ввода */
     margin-left: 5px; /* Небольшой отступ слева */
-    background-color: rgb(236, 110, 38);
+    background-color: rgb(240, 13, 13);
     color: #fff;
     border: none;
     padding: 10px 20px;
